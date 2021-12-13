@@ -5,15 +5,13 @@
     <meta charset="utf-8">
 
     <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
-    <script>
-      $(document).ready(function(){
-            document.write("Hello, World!");
-         });
-    </script>
+    <script type="text/javascript" src="bar-chart.js"></script>
 
   </head>
     <body>
-      <p>Testing</p>
+
+      <!-- example button to call function (Will run in future on pageload)-->
+      <button onclick="drawBarChart([1,2,3,4,5],{width:5, height:5},'body')">Test</button>
 
     </body>
   <footer>
