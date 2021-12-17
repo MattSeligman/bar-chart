@@ -14,24 +14,36 @@
       }
 
       .container-1 div{
-        border: solid #000 1px;
+        /* border-bottom: solid #000 1px; */
       }
 
       #index {
-        flex-grow: 1;
-        align-self: flex-end;
+        display: flex;
+        flex-wrap: wrap;
+        align-content: space-between;
+        height: 400px;
+        width: 30px;
+        padding-bottom: 15px;
+        border-right: solid #000 1px;
       }
 
-      #index > div{
+      #index > div {
         text-align: right;
         border: 0px;
+        width: 100%;
+        margin-bottom: -5px;
+        margin-right: 5px;
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: -20px;
       }
 
       .container-2 {
         display: flex;
         justify-content: space-around;
-
         flex-grow: 20;
+
+        border-bottom: solid #000 1px;
       }
 
       .bar{
