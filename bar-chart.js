@@ -6,6 +6,36 @@ function drawBarChart(data, options, element){
   // Update the html based on the element provided
   $(element).html(data);
 
+
+  // ### Start of Function for Grabbing Index -------------------
+
+  // define a highestNumber variable
+  let highestNumber = 0;
+
+  // Loop through each data
+  for(let i = 0; i < data.length; i++){
+
+    // if the current number is greater than the highest number
+    if (data[i] > highestNumber){
+
+      // Set current number to highest number
+      highestNumber = data[i];
+    }
+
+  }
+
+  console.log(highestNumber)
+  // ### End of Function for Grabbing Index -------------------
+
+  // counting down from the highest number
+  for(i = highestNumber; i >= 0; i--){
+
+    // add each Index value until reaches zero
+    document.getElementById("index").innerHTML += "<div>" + highestNumber + "</div>";
+    highestNumber--;
+
+  }
+
 }
 
 /*
