@@ -35,16 +35,23 @@ function drawBarChart(data, options, element){
 
   function drawBars(data,options){
 
-    console.log(options);
+    // Loop through all of the data entrys
     for(i = 0; i < data.length; i++){
 
-      console.log("Height:" + document.getElementById("charts").offsetHeight)
-      let barHeight = (data[i] * 100);
+      // Define the Label
+      let label = '<label>Label</label>';
 
-      // Prepare the bar
-      let singleBar = '<div class="bar"><div class="bar-highlight" style="height:' + barHeight + 'px;">' + data[i] + '</div><label>Label</label></div>';
+      // Define the Bar
+      let bar = '<div class="bar"><div id="bar-highlight" style="height:' +  (data[i] * 20) + '%;">' + data[i] + '</div>' + label + '</div>';
 
-      document.getElementById("charts").innerHTML += singleBar;
+
+      /*
+        This area will be used for If Statements related to Option Variations
+      */
+
+
+      // Add each Bar to the chart
+      document.getElementById("charts").innerHTML += bar;
 
     }
 
@@ -73,10 +80,6 @@ Display a list of single values, horizontally as a bar chart
     The position of values should be customizable too:
         Top, centre or bottom of the bar.
 
-Bar sizes should be dependent on the data that gets passed in
-
-    Bar width should be dependent on the total amount of values passed.
-    Bar height should be dependent on the values of the data.
 
 Bar properties that should be customizable:
 
