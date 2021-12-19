@@ -3,6 +3,60 @@ function drawBarChart(data, options, element){
   // return the values passed from HTML page
   console.log(data,options, element);
 
+  // Draws the Chart and Bars Layout
+  function drawChartLayout(data, element){
+
+    // Define the highest number
+    let highestNumber = Math.max(...data);
+
+    // Variable to hold bars produced
+    let barOutput = "";
+
+    // Loop through all of the data's bar entries
+    for(i = 0; i < data.length; i++){
+
+      // Define the Label
+      let label = '<label>Label</label>';
+
+      // Define the Bar
+      let bar = '<div class="bar"><div id="bar-highlight" style="height:' +  ((data[i] / highestNumber) * 100) + '%;">' + data[i] + '</div>' + label + '</div>';
+
+      // Add the current bar to the barOutput
+      barOutput += bar;
+
+    }
+
+    // Prepare the chart title display
+    let chartTitle = `<div class="chartTitle">
+      <h2>Bar Chart</h2>
+    </div>`;
+
+    // Prepare the index display
+    let indexDisplay = `<div id="index">
+
+    </div>`;
+
+    // Prepare the bar chart display
+    let chartDisplay = `<div id="charts" class="container-2">
+      ${barOutput}
+    </div>`;
+
+    // Prepare the Bar Chart
+    let barChart = `${chartTitle}
+    <div class="container-1">
+      ${indexDisplay}
+      ${chartDisplay}
+    </div>`;
+
+    // Locate the Div mentioned and insert the chart inside it.
+    document.getElementById( element.slice(1) ).innerHTML = barChart;
+
+    // Add the CSS for the charts heights 100%
+    document.getElementById( element.slice(1) ).style.height = '100%';
+
+  }
+
+
   function drawDataIndex(data){
 
     // Loop through the data array and define the highest number
@@ -10,6 +64,11 @@ function drawBarChart(data, options, element){
 
     // counting down from the highest number
     for(i = highestNumber; i >= 0; i--){
+
+      /*
+      To Add: When a highestNumber is higher than 10 determine
+      how many nunmbers to increment instead of by 1
+      */
 
       // add each Index value until reaches zero
       document.getElementById("index").innerHTML += '<div>' + highestNumber + '</div>';
@@ -19,49 +78,30 @@ function drawBarChart(data, options, element){
 
   }
 
-  function drawBars(data,options){
-
-    // Redefine the highest number
-    highestNumber = Math.max(...data);
-
-    // Loop through all of the data entrys
-    for(i = 0; i < data.length; i++){
-
-      // Define the Label
-      let label = '<label>Label</label>';
-
-      // Define the Bar
-      let bar = '<div class="bar"><div id="bar-highlight" style="height:' +  ((data[i] / highestNumber) * 100) + '%;">' + data[i] + '</div>' + label + '</div>';
-
-
-      /*
-        This area will be used for If Statements related to Option Variations
-      */
-
-
-      // Add each Bar to the chart
-      document.getElementById("charts").innerHTML += bar;
-
-    }
-
-  }
+  // Draw the Chart
+  drawChartLayout(data, element);
 
   // Produce the Index's
   drawDataIndex(data);
-  drawBars(data);
 
 }
 
 /*
-
-The data parameter will be the data the chart should work from Start with just an Array of numbers
+"data"
+The data parameter will be the data the chart
+should work from Start with just an Array of numbers
 e.g. [1, 2, 3, 4, 5]
 
-The options parameter should be an object which has options for the chart.
-e.g. width and height of the bar chart
+"options"
+The options parameter should be an object
+which has options for the chart.
 
-The element parameter should be a DOM element or jQuery element that the chart will get rendered into.
+width of the bar chart
+height of the bar chart
 
+"element"
+The element parameter should be a DOM element
+or jQuery element that the chart will get rendered into.
 
 Display a list of single values, horizontally as a bar chart
 
