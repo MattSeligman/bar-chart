@@ -44,34 +44,47 @@
         border-bottom: solid #000 1px;
         height: 100%;
 
+        gap: 1%;
+
 
         /* To Do: Calculate the height of index and return it for 83.5px allowing proper incrementation for any value limit*/
         background: repeating-linear-gradient(#cccccc, #cccccc 4px, #fff 4px, #fff 20%);
       }
 
-      /* To Do: Add text alignment variations */
-      .bar{
-        display: flex;
-        flex-direction: column;
-        align-self: flex-end;
-
-        /* To Do: Build the ability to Allow variation control per chart */
-        margin-bottom: -20px;
+      .bar {
+        position: relative;
+        height: 100%;
+        width: 100%;
       }
 
-      .bar-highlight{
+      #bar-highlight{
         background-color: grey;
-        height:100px;
-      }
+        position: absolute;
+        bottom: 0px;
+        width: inherit;
 
-      .bar:last-child > .bar-highlight {
-        height:200px;
+        /* Font Controls */
+        text-align: center;
+        color: white;
+        font-size: 25px;
+        font-weight: bold;
+        /* Font Controls - To be setup in Options */
+
       }
 
       .bar > label{
-        display: flex;
-        margin: auto 0px 0px 0px;
-        justify-content: flex-end;
+        margin: auto 0px -20px 0px;
+        position: absolute;
+        bottom: 0px;
+        width: inherit;
+
+        /* Label Controls */
+        text-align: center;
+        font-weight:bold;
+
+        /* Label Controls - To be setup in Options */
+
+
       }
 
 
