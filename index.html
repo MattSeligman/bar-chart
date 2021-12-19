@@ -51,12 +51,16 @@
         align-self: flex-end;
 
         /* To Do: Build the ability to Allow variation control per chart */
-        background-color: grey;
-        height:80px;
+        margin-bottom: -20px;
       }
 
-      .bar:last-child {
-        height:160px;
+      .bar-highlight{
+        background-color: grey;
+        height:100px;
+      }
+
+      .bar:last-child > .bar-highlight {
+        height:200px;
       }
 
       .bar > label{
@@ -85,25 +89,7 @@
         <div id="index"></div>
 
         <!-- holds the bar values -->
-        <div class="container-2">
-
-          <!-- individual bar -->
-          <div class="bar">
-            bar 1
-
-            <!-- individual bar label -->
-           <label>Label</label>
-          </div>
-
-          <!-- individual bar -->
-          <div class="bar">
-            bar 2
-
-            <!-- individual bar label -->
-            <label>Label 2</label>
-          </div>
-
-        </div>
+        <div id="charts" class="container-2"></div>
 
       </div>
 
