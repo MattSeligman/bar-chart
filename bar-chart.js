@@ -38,7 +38,13 @@ function drawBarChart(data, options, element){
     console.log(options);
     for(i = 0; i < data.length; i++){
 
-      document.getElementById("charts").innerHTML += '<div class="bar"><div class="bar-highlight">' + data[i] + '</div><label>Label</label></div>';
+      console.log("Height:" + document.getElementById("charts").offsetHeight)
+      let barHeight = (data[i] * 100);
+
+      // Prepare the bar
+      let singleBar = '<div class="bar"><div class="bar-highlight" style="height:' + barHeight + 'px;">' + data[i] + '</div><label>Label</label></div>';
+
+      document.getElementById("charts").innerHTML += singleBar;
 
     }
 
