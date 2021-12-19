@@ -6,35 +6,47 @@ function drawBarChart(data, options, element){
   // Update the html based on the element provided
   $(element).html(data);
 
+  function drawDataIndex(data){
 
-  // ### Start of Function for Grabbing Index -------------------
+    // define a highestNumber variable
+    let highestNumber = 0;
 
-  // define a highestNumber variable
-  let highestNumber = 0;
+    // Loop through each data
+    for(let i = 0; i < data.length; i++){
 
-  // Loop through each data
-  for(let i = 0; i < data.length; i++){
+      // if the current number is greater than the highest number
+      if (data[i] > highestNumber){
 
-    // if the current number is greater than the highest number
-    if (data[i] > highestNumber){
+        // Set current number to highest number
+        highestNumber = data[i];
+      }
+    }
 
-      // Set current number to highest number
-      highestNumber = data[i];
+    // counting down from the highest number
+    for(i = highestNumber; i >= 0; i--){
+
+      // add each Index value until reaches zero
+      document.getElementById("index").innerHTML += '<div>' + highestNumber + '</div>';
+      highestNumber--;
+
     }
 
   }
 
-  console.log(highestNumber)
-  // ### End of Function for Grabbing Index -------------------
+  function drawBars(data,options){
 
-  // counting down from the highest number
-  for(i = highestNumber; i >= 0; i--){
+    console.log(options);
+    for(i = 0; i < data.length; i++){
 
-    // add each Index value until reaches zero
-    document.getElementById("index").innerHTML += "<div>" + highestNumber + "</div>";
-    highestNumber--;
+      document.getElementById("charts").innerHTML += '<div class="bar"><div class="bar-highlight">' + data[i] + '</div><label>Label</label></div>';
+
+    }
 
   }
+
+  // Produce the Index's
+  drawDataIndex(data);
+  drawBars(data);
 
 }
 
