@@ -8,16 +8,19 @@
     <script type="text/javascript" src="bar-chart.js"></script>
     <style>
 
+      html, body {
+        height: 100%;
+      }
       .container-1 {
         display: flex;
-        min-height: 400px;
+        height: 75%;
+        min-height: 200px;
       }
 
       #index {
         display: flex;
         flex-wrap: wrap;
         align-content: space-between;
-        height: 400px;
         width: 30px;
         padding-bottom: 15px;
         border-right: solid #000 1px;
@@ -39,9 +42,11 @@
         justify-content: space-around;
         flex-grow: 20;
         border-bottom: solid #000 1px;
+        height: 100%;
+
 
         /* To Do: Calculate the height of index and return it for 83.5px allowing proper incrementation for any value limit*/
-        background: repeating-linear-gradient(#cccccc, #cccccc 4px, #fff 4px, #fff 83.5px);
+        background: repeating-linear-gradient(#cccccc, #cccccc 4px, #fff 4px, #fff 20%);
       }
 
       /* To Do: Add text alignment variations */
