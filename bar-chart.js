@@ -3,24 +3,10 @@ function drawBarChart(data, options, element){
   // return the values passed from HTML page
   console.log(data,options, element);
 
-  // Update the html based on the element provided
-  $(element).html(data);
-
   function drawDataIndex(data){
 
-    // define a highestNumber variable
-    let highestNumber = 0;
-
-    // Loop through each data
-    for(let i = 0; i < data.length; i++){
-
-      // if the current number is greater than the highest number
-      if (data[i] > highestNumber){
-
-        // Set current number to highest number
-        highestNumber = data[i];
-      }
-    }
+    // Loop through the data array and define the highest number
+    let highestNumber = Math.max(...data);
 
     // counting down from the highest number
     for(i = highestNumber; i >= 0; i--){
@@ -35,6 +21,9 @@ function drawBarChart(data, options, element){
 
   function drawBars(data,options){
 
+    // Redefine the highest number
+    highestNumber = Math.max(...data);
+
     // Loop through all of the data entrys
     for(i = 0; i < data.length; i++){
 
@@ -42,7 +31,7 @@ function drawBarChart(data, options, element){
       let label = '<label>Label</label>';
 
       // Define the Bar
-      let bar = '<div class="bar"><div id="bar-highlight" style="height:' +  (data[i] * 20) + '%;">' + data[i] + '</div>' + label + '</div>';
+      let bar = '<div class="bar"><div id="bar-highlight" style="height:' +  ((data[i] / highestNumber) * 100) + '%;">' + data[i] + '</div>' + label + '</div>';
 
 
       /*
