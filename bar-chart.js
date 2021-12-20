@@ -19,7 +19,7 @@ function drawBarChart(data, options, element){
       let label = '<label>Label</label>';
 
       // Define the Bar
-      let bar = '<div class="bar"><div id="bar-highlight" style="height:' +  ((data[i] / highestNumber) * 100) + '%;">' + data[i] + '</div>' + label + '</div>';
+      let bar = '<div class="bar"><div id="bar-highlight" style="height:' +  ((data[i] / highestNumber) * 100) + '%;"><div id="chartValue">' + data[i] + '</div></div>' + label + '</div>';
 
       // Add the current bar to the barOutput
       barOutput += bar;
@@ -32,9 +32,7 @@ function drawBarChart(data, options, element){
     </div>`;
 
     // Prepare the index display
-    let indexDisplay = `<div id="index">
-
-    </div>`;
+    let indexDisplay = `<div id="index"></div>`;
 
     // Prepare the bar chart display
     let chartDisplay = `<div id="charts" class="container-2">
@@ -56,7 +54,6 @@ function drawBarChart(data, options, element){
 
   }
 
-
   function drawDataIndex(data){
 
     // Loop through the data array and define the highest number
@@ -64,11 +61,6 @@ function drawBarChart(data, options, element){
 
     // counting down from the highest number
     for(i = highestNumber; i >= 0; i--){
-
-      /*
-      To Add: When a highestNumber is higher than 10 determine
-      how many nunmbers to increment instead of by 1
-      */
 
       // add each Index value until reaches zero
       document.getElementById("index").innerHTML += '<div>' + highestNumber + '</div>';
@@ -78,11 +70,33 @@ function drawBarChart(data, options, element){
 
   }
 
+  function setOptions(options){
+
+    // If barColour is assigned
+    if( options.hasOwnProperty('barColour') ){
+
+
+      $("#bar-highlight").css("background-color", options['barColour'] );
+
+    }
+
+    // If labelColour is assigned
+    if( options.hasOwnProperty('labelColour') ){
+
+      $("label").css("color", options['labelColour'] );
+
+    }
+
+
+  }
+
   // Draw the Chart
   drawChartLayout(data, element);
 
   // Produce the Index's
   drawDataIndex(data);
+
+  setOptions(options);
 
 }
 
