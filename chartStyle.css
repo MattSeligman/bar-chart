@@ -1,6 +1,7 @@
 html, body {
   height: 100%;
 }
+
 .container-1 {
   display: flex;
   height: 75%;
@@ -36,8 +37,6 @@ html, body {
 
   gap: 1%;
 
-
-  /* To Do: Calculate the height of index and return it for 83.5px allowing proper incrementation for any value limit*/
   background: repeating-linear-gradient(#cccccc, #cccccc 4px, #fff 4px, #fff 20%);
 }
 

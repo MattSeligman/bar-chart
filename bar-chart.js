@@ -72,14 +72,22 @@ function drawBarChart(data, options, element){
 
   function setOptions(options){
 
-    /*
-    Bar Colour
-    Label Colour
-    Bar spacing (space between bars)
-    Bar Chart axes
-    */
+    // If options has titleFontSize
+    if( options.hasOwnProperty('titleFontSize') ){
 
-    // If barColour is assigned
+      // Update the titleFontSize
+      $(".chartTitle > h2").css("font-size", options['titleFontSize'] );
+    }
+
+    // If options has titleFontColour
+    if( options.hasOwnProperty('titleFontColour') ){
+
+      // Update the titleFontSize
+      $(".chartTitle > h2").css("color", options['titleFontColour'] );
+    }
+
+
+    // If options has barColour
     if( options.hasOwnProperty('barColour') ){
 
       // Update the "barColour Class with the current barColur"
@@ -88,32 +96,28 @@ function drawBarChart(data, options, element){
     }
 
 
-    // If labelColour is assigned
+    // if options has labelColour set the label to that color
     if( options.hasOwnProperty('labelColour') ){
 
       $("label").css("color", options['labelColour'] );
     }
 
-    // If Bar spacing is assigned
+    // if options has barSpacing set the barSpacing to that gap
     if( options.hasOwnProperty('barSpacing') ){
-
-      $("label").css("color", options['labelColour'] );
+      $(".container-2").css("gap", options['barSpacing'] );
     }
 
-    // If labelColour is assigned
+    // if options has barChartAxes update the chart layout
     if( options.hasOwnProperty('barChartAxes') ){
 
       // If the barChartAxes is vertical then produce Vertical Chart
       if(options['barChartAxes'] === 'vertical'){
-
 
       // Otherwise produce the Horizontal Chart
       } else {
 
 
       }
-
-
     }
 
 
