@@ -19,7 +19,7 @@ function drawBarChart(data, options, element){
       let label = '<label>Label</label>';
 
       // Define the Bar
-      let bar = '<div class="bar"><div id="bar-highlight" style="height:' +  ((data[i] / highestNumber) * 100) + '%;"><div id="chartValue">' + data[i] + '</div></div>' + label + '</div>';
+      let bar = '<div class="bar"><div id="bar-highlight" class="barColor" style="height:' +  ((data[i] / highestNumber) * 100) + '%;"><div id="chartValue">' + data[i] + '</div></div>' + label + '</div>';
 
       // Add the current bar to the barOutput
       barOutput += bar;
@@ -72,20 +72,50 @@ function drawBarChart(data, options, element){
 
   function setOptions(options){
 
+    /*
+    Bar Colour
+    Label Colour
+    Bar spacing (space between bars)
+    Bar Chart axes
+    */
+
     // If barColour is assigned
     if( options.hasOwnProperty('barColour') ){
 
-
-      $("#bar-highlight").css("background-color", options['barColour'] );
+      // Update the "barColour Class with the current barColur"
+      $(".barColor").css("background-color", options['barColour'] );
 
     }
+
 
     // If labelColour is assigned
     if( options.hasOwnProperty('labelColour') ){
 
       $("label").css("color", options['labelColour'] );
+    }
+
+    // If Bar spacing is assigned
+    if( options.hasOwnProperty('barSpacing') ){
+
+      $("label").css("color", options['labelColour'] );
+    }
+
+    // If labelColour is assigned
+    if( options.hasOwnProperty('barChartAxes') ){
+
+      // If the barChartAxes is vertical then produce Vertical Chart
+      if(options['barChartAxes'] === 'vertical'){
+
+
+      // Otherwise produce the Horizontal Chart
+      } else {
+
+
+      }
+
 
     }
+
 
 
   }
