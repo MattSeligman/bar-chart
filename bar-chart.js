@@ -100,17 +100,35 @@ function drawBarChart(data, options, element){
       // If the barColur has more than one color
       if (typeof options['barColour'] === "object"){
 
+        // grab all the bars by class name ".bar-highlight" and assign them as a bars object
         let bars = document.getElementsByClassName("bar-highlight");
 
-        let x = 0;
+        // track the current Colour index (starts at 0)
+        let colourIndex = 0;
 
+        // for each bar of the bars object
         for (var bar of bars) {
-          bar.style.backgroundColor = options['barColour'][x];
 
-          if (x < options['labelColour'].length){
-            x++;
+          // if the colourIndex is less than the barColour's length
+          if (colourIndex < options['barColour'].length){
+
+            // Assign the current bar the current barColour based on the current index.
+            bar.style.backgroundColor = options['barColour'][colourIndex];
+
+            // Increment to next colour
+            colourIndex++;
+
+          // otherwise
           } else {
-            x = 0;
+
+            // reset the colourIndex back to the start
+            colourIndex = 0;
+
+            // Assign the current bar the current barColour based on the current index.
+            bar.style.backgroundColor = options['barColour'][colourIndex];
+
+            // Increment to next colour
+            colourIndex++;
           }
         }
 
