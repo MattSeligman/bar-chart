@@ -16,10 +16,10 @@ function drawBarChart(data, options, element){
     for(i = 0; i < data.length; i++){
 
       // Define the Label
-      let label = '<label>Label</label>';
+      let label = '<label>Label ' + (i + 1) + '</label>';
 
       // Define the Bar
-      let bar = '<div class="bar"><div id="bar-highlight" class="barColor" style="height:' +  ((data[i] / highestNumber) * 100) + '%;"><div id="chartValue">' + data[i] + '</div></div>' + label + '</div>';
+      let bar = '<div class="bar"><div class="bar-highlight" style="height:' +  ((data[i] / highestNumber) * 100) + '%;"><div id="chartValue">' + data[i] + '</div></div>' + label + '</div>';
 
       // Add the current bar to the barOutput
       barOutput += bar;
@@ -70,7 +70,7 @@ function drawBarChart(data, options, element){
 
   }
 
-  function setOptions(options){
+  function setOptions(options, data){
 
     // If options has titleFontSize
     if( options.hasOwnProperty('titleFontSize') ){
@@ -86,12 +86,36 @@ function drawBarChart(data, options, element){
       $(".chartTitle > h2").css("color", options['titleFontColour'] );
     }
 
-
     // If options has barColour
     if( options.hasOwnProperty('barColour') ){
 
-      // Update the "barColour Class with the current barColur"
-      $(".barColor").css("background-color", options['barColour'] );
+      console.log(options['barColour']);
+
+      // if there is only 1 bar colour
+      if (typeof options['barColour'] === "string"){
+        // Update the "barColour Class with the current barColur"
+        $(".bar-highlight").css("background-color", options['barColour'] );
+      }
+
+      // If the barColur has more than one color
+      if (typeof options['barColour'] === "object"){
+
+        let bars = document.getElementsByClassName("bar-highlight");
+
+        let x = 0;
+
+        for (var bar of bars) {
+          bar.style.backgroundColor = options['barColour'][x];
+
+          if (x < options['labelColour'].length){
+            x++;
+          } else {
+            x = 0;
+          }
+        }
+
+      }
+
 
     }
 
@@ -130,7 +154,7 @@ function drawBarChart(data, options, element){
   // Produce the Index's
   drawDataIndex(data);
 
-  setOptions(options);
+  setOptions(options, data);
 
 }
 
