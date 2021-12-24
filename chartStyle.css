@@ -46,7 +46,7 @@ html, body {
   width: 100%;
 }
 
-#bar-highlight{
+.bar-highlight{
   position: absolute;
   bottom: 0px;
   width: inherit;
