@@ -89,58 +89,42 @@ function drawBarChart(data, options, element){
     // If options has barColour
     if( options.hasOwnProperty('barColour') ){
 
-      console.log(options['barColour']);
+      // grab all the bars by class and assign them as a bars object
+      let bars = document.getElementsByClassName("bar-highlight");
 
-      // if there is only 1 bar colour
-      if (typeof options['barColour'] === "string"){
-        // Update the "barColour Class with the current barColur"
-        $(".bar-highlight").css("background-color", options['barColour'] );
-      }
+      // track the current Colour index
+      let colourIndex = 0;
 
-      // If the barColur has more than one color
-      if (typeof options['barColour'] === "object"){
+      // for each bar of the bars object
+      for (var bar of bars) {
 
-        // grab all the bars by class name ".bar-highlight" and assign them as a bars object
-        let bars = document.getElementsByClassName("bar-highlight");
+        // if the colourIndex is less than the barColour's length
+        if (colourIndex < options['barColour'].length){
 
-        // track the current Colour index (starts at 0)
-        let colourIndex = 0;
+          // assign the current bar the current barColour based on the current index.
+          bar.style.backgroundColor = options['barColour'][colourIndex];
 
-        // for each bar of the bars object
-        for (var bar of bars) {
+          // increment to next colour
+          colourIndex++;
 
-          // if the colourIndex is less than the barColour's length
-          if (colourIndex < options['barColour'].length){
+        // otherwise
+        } else {
 
-            // Assign the current bar the current barColour based on the current index.
-            bar.style.backgroundColor = options['barColour'][colourIndex];
+          // reset the colourIndex back to the start
+          colourIndex = 0;
 
-            // Increment to next colour
-            colourIndex++;
+          // assign the current bar the current barColour based on the current index.
+          bar.style.backgroundColor = options['barColour'][colourIndex];
 
-          // otherwise
-          } else {
-
-            // reset the colourIndex back to the start
-            colourIndex = 0;
-
-            // Assign the current bar the current barColour based on the current index.
-            bar.style.backgroundColor = options['barColour'][colourIndex];
-
-            // Increment to next colour
-            colourIndex++;
-          }
+          // increment to next colour
+          colourIndex++;
         }
-
       }
-
-
     }
 
 
     // if options has labelColour set the label to that color
     if( options.hasOwnProperty('labelColour') ){
-
       $("label").css("color", options['labelColour'] );
     }
 
