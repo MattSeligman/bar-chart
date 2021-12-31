@@ -3,23 +3,77 @@ function drawBarChart(data, options, element){
   // return the values passed from HTML page
   console.log(data,options, element);
 
+  let highestNumber = null;
+
+  // Determine the highest Value
+  function findHighestNumber(data){
+
+    // loop through the data
+    for( let i = 0; i < data.length; i++ ){
+
+      // if the data is an object
+      if(typeof data[i] === 'object'){
+
+        // if highestNumber is less than the current objects value
+        if (highestNumber < Object.values(data[i])[0]) {
+
+          // update the highestNumber
+          highestNumber = Object.values(data[i])[0];
+        }
+
+      // else if the data is a number
+      } else if(typeof data[i] === 'number'){
+
+        // if the highestNumber less than the current value
+        if (highestNumber < data[i]) {
+
+          // update the highestNumber
+          highestNumber = data[i];
+        }
+      }
+    }
+  }
+
+  // assign the highest number
+  findHighestNumber(data);
+
   // Draws the Chart and Bars Layout
   function drawChartLayout(data, element){
 
-    // Define the highest number
-    let highestNumber = Math.max(...data);
-
     // Variable to hold bars produced
     let barOutput = "";
+    let labelOutput = null;
 
     // Loop through all of the data's bar entries
     for(i = 0; i < data.length; i++){
 
+      // variable used to prep label name (future to be connected to options)
+      let defaultBarName = 'Label';
+
+      // check if the data contains an custom label (an object)
+      if (typeof data[i] === "object"){
+
+        // assign the currentLabel
+        currentLabel = Object.keys(data[i])[0];
+
+        // assign the barValue
+        currentBarValue = Object.values(data[i])[0];
+
+      } else {
+
+        // assign the currentLabel
+        currentLabel = `${defaultBarName} ${(i + 1)}`;
+
+        // assign the barValue
+        currentBarValue = data[i];
+
+      }
+
       // Define the Label
-      let label = '<label>Label ' + (i + 1) + '</label>';
+      labelOutput = `<label>${currentLabel}</label>`;
 
       // Define the Bar
-      let bar = '<div class="bar"><div class="bar-highlight" style="height:' +  ((data[i] / highestNumber) * 100) + '%;"><div id="chartValue">' + data[i] + '</div></div>' + label + '</div>';
+      let bar = '<div class="bar"><div class="bar-highlight" style="height:' +  ((currentBarValue / highestNumber) * 100) + '%;"><div id="chartValue">' + currentBarValue + '</div></div>' + labelOutput + '</div>';
 
       // Add the current bar to the barOutput
       barOutput += bar;
@@ -54,20 +108,19 @@ function drawBarChart(data, options, element){
 
   }
 
-  function drawDataIndex(data){
+  function drawDataIndex(){
 
     // Loop through the data array and define the highest number
-    let highestNumber = Math.max(...data);
+    let indexValue = highestNumber;
 
     // counting down from the highest number
-    for(i = highestNumber; i >= 0; i--){
+    for(i = indexValue; i >= 0; i--){
 
       // add each Index value until reaches zero
-      document.getElementById("index").innerHTML += '<div>' + highestNumber + '</div>';
-      highestNumber--;
+      document.getElementById("index").innerHTML += '<div>' + indexValue + '</div>';
+      indexValue--;
 
     }
-
   }
 
   function setOptions(options, data){
