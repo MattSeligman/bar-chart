@@ -3,9 +3,10 @@ function drawBarChart(data, options, element){
   // return the values passed from HTML page
   console.log(data,options, element);
 
+  // prepare a variable to track the highest number (100%)
   let highestNumber = null;
 
-  // Determine the highest Value
+  // determine the highest Value
   function findHighestNumber(data){
 
     // loop through the data
@@ -37,26 +38,36 @@ function drawBarChart(data, options, element){
   // assign the highest number
   findHighestNumber(data);
 
-  // Draws the Chart and Bars Layout
-  function drawChartLayout(data, element){
+  // draws the chart layout
+  function drawChartLayout(data, options, element){
 
-    // Variable to hold bars produced
-    let barOutput = "";
-    let labelOutput = null;
+    // variable used to prep label name (future to be connected to options)
+    let defaultBarName = 'Label';
 
-    // Loop through all of the data's bar entries
+    // variable to hold theBars created
+    let theBars = '';
+    let isVertical = '';
+
+    // set theChartAxis to horizontal by default
+    let theChartAxis = 'horizontal';
+
+    // If data's options have barChartAxes set to vertical
+    if( options.hasOwnProperty('barChartAxes') && options['barChartAxes'] === 'vertical' ) {
+
+      // change theChartAxis to vertical
+      theChartAxis = 'vertical';
+    }
+
+    // loop through the bar data entries
     for(i = 0; i < data.length; i++){
 
-      // variable used to prep label name (future to be connected to options)
-      let defaultBarName = 'Label';
-
-      // check if the data contains an custom label (an object)
-      if (typeof data[i] === "object"){
+      // if this bar's data is an object
+      if (typeof data[i] === 'object'){
 
         // assign the currentLabel
         currentLabel = Object.keys(data[i])[0];
 
-        // assign the barValue
+        // assign the currentBarValue
         currentBarValue = Object.values(data[i])[0];
 
       } else {
@@ -64,19 +75,30 @@ function drawBarChart(data, options, element){
         // assign the currentLabel
         currentLabel = `${defaultBarName} ${(i + 1)}`;
 
-        // assign the barValue
+        // assign the currentBarValue
         currentBarValue = data[i];
 
       }
 
-      // Define the Label
-      labelOutput = `<label>${currentLabel}</label>`;
+      let theAxisStyle = 'height';
 
-      // Define the Bar
-      let bar = '<div class="bar"><div class="bar-highlight" style="height:' +  ((currentBarValue / highestNumber) * 100) + '%;"><div id="chartValue">' + currentBarValue + '</div></div>' + labelOutput + '</div>';
+      if (theChartAxis === 'vertical'){
+        isVertical = 'verticalChart';
+        theAxisStyle = 'width';
 
-      // Add the current bar to the barOutput
-      barOutput += bar;
+      }
+
+      // format the bar
+      let bar = `
+      <div class="bar">
+        <div class="bar-highlight" style="${theAxisStyle}:${((currentBarValue / highestNumber) * 100)}%;">
+          <div id="chartValue">${currentBarValue}</div>
+        </div>
+        <label>${currentLabel}</label>
+      </div>`;
+
+      // add the current bar to theBars
+      theBars += bar;
 
     }
 
@@ -89,8 +111,8 @@ function drawBarChart(data, options, element){
     let indexDisplay = `<div id="index"></div>`;
 
     // Prepare the bar chart display
-    let chartDisplay = `<div id="charts" class="container-2">
-      ${barOutput}
+    let chartDisplay = `<div id="charts" class="container-2 ${isVertical}">
+      ${theBars}
     </div>`;
 
     // Prepare the Bar Chart
@@ -204,7 +226,7 @@ function drawBarChart(data, options, element){
   }
 
   // Draw the Chart
-  drawChartLayout(data, element);
+  drawChartLayout(data, options, element);
 
   // Produce the Index's
   drawDataIndex(data);
