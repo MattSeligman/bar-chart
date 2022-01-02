@@ -33,6 +33,7 @@ function drawBarChart(data, options, element){
         }
       }
     }
+    return highestNumber;
   }
 
   // assign the highest number
@@ -41,31 +42,81 @@ function drawBarChart(data, options, element){
   // draws the chart layout
   function drawChartLayout(data, options, element){
 
-    // variable used to prep label name (future to be connected to options)
-    let defaultBarName = 'Label';
-
-    // variable to hold theBars created
-    let theBars = '';
-    let isVertical = '';
-
-    // set theChartAxis to horizontal by default
-    let theChartAxis = 'horizontal';
-
-    // If data's options have barChartAxes set to vertical
-    if( options.hasOwnProperty('barChartAxes') && options['barChartAxes'] === 'vertical' ) {
-
-      // change theChartAxis to vertical
-      theChartAxis = 'vertical';
+    // Default chart options
+    let chartOptions = {
+      height: '100%',
+      width: '98%',
+      verticalAxis: false,
+      stacked: false,
+      titleFontSize: '15px',
+      titleFontColour: 'blue',
+      barColours: 'blue',
+      labelColours: 'blue',
+      labelName: 'Label',
+      barSpacing: '2%',
     }
+
+    let chart = {};
+
+    if (options['verticalAxis'] === true ){
+
+      chart['type'] = 'vertical';
+      chart['barProperty'] = 'width';
+
+    } else {
+
+      chart['type'] = 'horizontal';
+      chart['barProperty'] = 'height';
+
+    }
+
+    console.log(chart)
+
+    // check through the default chartOptions
+    for (let eachOption in chartOptions){
+
+      // check if the options contain eachOption
+      if( options.hasOwnProperty( eachOption ) ) {
+
+        // if it does update the chartOptions to the new option
+        chartOptions[eachOption] = options[eachOption];
+      }
+    }
+
+    // if the options contains a custom width
+    if( options.hasOwnProperty('width') ) { document.getElementById( element.slice(1) ).style.width = options['width']; }
+    else { document.getElementById( element.slice(1) ).style.width = chartOptions['width']; }
+
+    // if the options contains a custom height
+    if( options.hasOwnProperty('height') ) { document.getElementById( element.slice(1) ).style.height = options['height']; }
+    else { document.getElementById( element.slice(1) ).style.height = chartOptions['height']; }
+
+    // variables for default settings
+    let highestIndex = highestNumber;
+    let theLeftDisplay = '';
+    let theBottomDisplay = '';
+    let theBars = '';
+    let theLabels = '';
+    let theIndexs = '';
 
     // loop through the bar data entries
     for(i = 0; i < data.length; i++){
+
+      // if the highestIndex (highestNumber) is greater or equal to zero
+      if (highestIndex >= 0){
+        // add the indexValue to theIndexs variable
+        theIndexs += `<label>${highestIndex}</label>`;
+
+        //subtract 1 from the highestIndex
+        highestIndex--;
+      }
 
       // if this bar's data is an object
       if (typeof data[i] === 'object'){
 
         // assign the currentLabel
-        currentLabel = Object.keys(data[i])[0];
+        currentLabel = `<label>${Object.keys(data[i])[0]}</label>`;
+        theLabels += `<label>${Object.keys(data[i])[0]}</label>`;
 
         // assign the currentBarValue
         currentBarValue = Object.values(data[i])[0];
@@ -73,76 +124,73 @@ function drawBarChart(data, options, element){
       } else {
 
         // assign the currentLabel
-        currentLabel = `${defaultBarName} ${(i + 1)}`;
+        currentLabel = `<label>${chartOptions['labelName']} ${(i + 1)}</label>`;
+        theLabels += `<label>${chartOptions['labelName']} ${(i + 1)}</label>`;
+
 
         // assign the currentBarValue
         currentBarValue = data[i];
-
       }
 
-      let theAxisStyle = 'height';
+      // if the chartOptions verticalAxis is true
+      if (chartOptions['verticalAxis']){
 
-      if (theChartAxis === 'vertical'){
-        isVertical = 'verticalChart';
-        theAxisStyle = 'width';
+        // set theLeftDisplay to labels
+        theLeftDisplay = `${theLabels}`;
+
+        // set theBottomDisplay to the current Index
+        theBottomDisplay = `${theIndexs}`;
+
+        // format the bar for Vertical Axis
+        theBars += `
+        <div class="bar">
+          <div class="bar-highlight" style="${chart['barProperty']}:${((currentBarValue / highestNumber) * 100 )}%;">
+            <div id="chartValue">${currentBarValue}</div>
+          </div>
+        </div>`;
+
+      } else {
+        // set theLeftDisplay to Index
+        theLeftDisplay = `${theIndexs}`;
+
+        // set theBottomDisplay to the current Label
+        theBottomDisplay = `<label>${currentLabel}</label>`;
+
+        // format the bar for Horizontal Axis
+        theBars += `
+        <div class="bar">
+          <div class="bar-highlight" style="${chart['barProperty']}:${((currentBarValue / highestNumber) * 100 )}%;">
+            <div id="chartValue">${currentBarValue}</div>
+          </div>
+          ${theBottomDisplay}
+        </div>`;
 
       }
-
-      // format the bar
-      let bar = `
-      <div class="bar">
-        <div class="bar-highlight" style="${theAxisStyle}:${((currentBarValue / highestNumber) * 100)}%;">
-          <div id="chartValue">${currentBarValue}</div>
-        </div>
-        <label>${currentLabel}</label>
-      </div>`;
-
-      // add the current bar to theBars
-      theBars += bar;
 
     }
 
-    // Prepare the chart title display
-    let chartTitle = `<div class="chartTitle">
+    let barChart = `
+    <div class="chartTitle">
       <h2>Bar Chart</h2>
-    </div>`;
+    </div>
 
-    // Prepare the index display
-    let indexDisplay = `<div id="index"></div>`;
-
-    // Prepare the bar chart display
-    let chartDisplay = `<div id="charts" class="container-2 ${isVertical}">
-      ${theBars}
-    </div>`;
-
-    // Prepare the Bar Chart
-    let barChart = `${chartTitle}
     <div class="container-1">
-      ${indexDisplay}
-      ${chartDisplay}
+      <div id="verticalLabels" class="left">
+        ${theLeftDisplay}
+      </div>
+      <div id="charts" class="container-2 ${chart['type']}">
+        ${theBars}
+      </div>
     </div>`;
+
+    if (chartOptions['verticalAxis']){
+      barChart += `<div id="verticalIndex">${theBottomDisplay}</div>`;
+    }
+
 
     // Locate the Div mentioned and insert the chart inside it.
     document.getElementById( element.slice(1) ).innerHTML = barChart;
-
-    // Add the CSS for the charts heights 100%
-    document.getElementById( element.slice(1) ).style.height = '100%';
-
-  }
-
-  function drawDataIndex(){
-
-    // Loop through the data array and define the highest number
-    let indexValue = highestNumber;
-
-    // counting down from the highest number
-    for(i = indexValue; i >= 0; i--){
-
-      // add each Index value until reaches zero
-      document.getElementById("index").innerHTML += '<div>' + indexValue + '</div>';
-      indexValue--;
-
-    }
+    console.log(document.getElementById('verticalLabels').clientWidth)
   }
 
   function setOptions(options, data){
@@ -227,9 +275,6 @@ function drawBarChart(data, options, element){
 
   // Draw the Chart
   drawChartLayout(data, options, element);
-
-  // Produce the Index's
-  drawDataIndex(data);
 
   setOptions(options, data);
 
