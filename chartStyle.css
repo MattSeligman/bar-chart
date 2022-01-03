@@ -40,22 +40,33 @@ html, body{
   display: flex;
   justify-content: space-around;
   flex-grow: 20;
-  border-bottom: solid #000 1px;
+  border: solid #000 1px;
   height: auto;
+}
 
-  gap: 1%;
-
-  background: repeating-linear-gradient(#cccccc, #cccccc 4px, #fff 4px, #fff 20%);
+.horizontal {
+  background-image:
+    linear-gradient(to top, #ccc 1px, transparent 1px),
+    linear-gradient(to left, #ccc 1px, transparent 1px);
 }
 
 .vertical {
 	flex-direction: column;
+
+  background-image:
+    linear-gradient(to right, #ccc 1px, transparent 1px),
+    linear-gradient(to bottom, #ccc 1px, transparent 1px);
 }
 
 #verticalIndex {
 	display: flex;
-	flex-direction: row-reverse;
+	flex-flow: row-reverse;
+  justify-content: space-between;
 	margin-left: 102px;
+}
+
+#verticalIndex > label {
+	width: auto;
 }
 
 .bar {
@@ -64,14 +75,12 @@ html, body{
   width: 100%;
 }
 
-.bar-highlight{
-  position: absolute;
-  bottom: 0px;
-  width: inherit;
-  height: inherit;
+.barValue {
+	width: 100%;
+  height: auto;
+  padding: 10px;
 
   /* Font Controls */
-  text-align: center;
   color: white;
   font-size: 25px;
   font-weight: bold;
@@ -79,14 +88,23 @@ html, body{
 
 }
 
-.bar > label{
-  margin: auto 0px -20px 0px;
+.bar-highlight{
+  display: flex;
   position: absolute;
   bottom: 0px;
   width: inherit;
+  height: inherit;
+}
 
-
-  /* Label Controls - To be setup in Options */
+.bar > label {
+	margin: auto auto -25px auto;
+	position: absolute;
+	bottom: 0px;
+	width: 100%;
+	text-align: center;
+	word-wrap: anywhere;
+	font-size: 15px;
+	height: 23px;
 }
 
 .bottom {
@@ -99,14 +117,7 @@ html, body{
 .left {
 	display: flex;
 	flex-wrap: wrap;
-	align-content: space-between;
 	width: min-content;
-  padding: 0px 5px 0px 5px;
-	border-right: solid #000 1px;
-}
-
-label {
-  width: 100%;
-  text-align: center;
-
+	padding: 0px 5px 0px 5px;
+	flex-direction: row-reverse;
 }
