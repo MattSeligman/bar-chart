@@ -54,6 +54,7 @@ function drawBarChart(data, options, element){
       labelColours: 'blue',
       labelName: 'Label',
       barSpacing: '2%',
+      barValuePosition: 'top' // 'top', 'centre', or 'bottom'
     }
 
     let chart = {};
@@ -99,17 +100,17 @@ function drawBarChart(data, options, element){
     let theLabels = '';
     let theIndexs = '';
 
+    // if the highestIndex (highestNumber) is greater or equal to zero
+    for(i = highestIndex; highestIndex >= 0; highestIndex--){
+
+      theIndexs += `<label>${highestIndex}</label>`;
+
+    }
+
+    console.log(theIndexs)
     // loop through the bar data entries
     for(i = 0; i < data.length; i++){
 
-      // if the highestIndex (highestNumber) is greater or equal to zero
-      if (highestIndex >= 0){
-        // add the indexValue to theIndexs variable
-        theIndexs += `<label>${highestIndex}</label>`;
-
-        //subtract 1 from the highestIndex
-        highestIndex--;
-      }
 
       // if this bar's data is an object
       if (typeof data[i] === 'object'){
@@ -145,7 +146,7 @@ function drawBarChart(data, options, element){
         theBars += `
         <div class="bar">
           <div class="bar-highlight" style="${chart['barProperty']}:${((currentBarValue / highestNumber) * 100 )}%;">
-            <div id="chartValue">${currentBarValue}</div>
+            <div class="barValue">${currentBarValue}</div>
           </div>
         </div>`;
 
@@ -154,13 +155,13 @@ function drawBarChart(data, options, element){
         theLeftDisplay = `${theIndexs}`;
 
         // set theBottomDisplay to the current Label
-        theBottomDisplay = `<label>${currentLabel}</label>`;
+        theBottomDisplay = `${currentLabel}`;
 
         // format the bar for Horizontal Axis
         theBars += `
         <div class="bar">
           <div class="bar-highlight" style="${chart['barProperty']}:${((currentBarValue / highestNumber) * 100 )}%;">
-            <div id="chartValue">${currentBarValue}</div>
+            <div class="barValue">${currentBarValue}</div>
           </div>
           ${theBottomDisplay}
         </div>`;
@@ -175,7 +176,7 @@ function drawBarChart(data, options, element){
     </div>
 
     <div class="container-1">
-      <div id="verticalLabels" class="left">
+      <div id="sidebar" class="left">
         ${theLeftDisplay}
       </div>
       <div id="charts" class="container-2 ${chart['type']}">
@@ -187,10 +188,42 @@ function drawBarChart(data, options, element){
       barChart += `<div id="verticalIndex">${theBottomDisplay}</div>`;
     }
 
-
     // Locate the Div mentioned and insert the chart inside it.
     document.getElementById( element.slice(1) ).innerHTML = barChart;
-    console.log(document.getElementById('verticalLabels').clientWidth)
+
+    // set the grid background based on the amount of bars
+    $(".container-2").css("background-size", `calc( (1 / ${highestNumber} ) * 100% ) calc( (1 / ${highestNumber} ) * 100% )` );
+
+    if (options['verticalAxis'] === true ){
+
+      $(".left").css("align-content", 'space-around' );
+
+      if (chartOptions['barValuePosition'].toLowerCase() === 'top'){
+        $(".barValue").css({"align-self": "center", "text-align": "right"});
+      }
+      else if (chartOptions['barValuePosition'].toLowerCase() === 'centre'){
+        $(".barValue").css({"align-self": "center", "text-align": "center"});
+      }
+      else if (chartOptions['barValuePosition'].toLowerCase() === 'bottom'){
+        $(".barValue").css({"align-self": "center", "text-align": "left"});
+      }
+
+    } else {
+
+      $(".left").css("align-content", 'space-between' );
+
+      if (chartOptions['barValuePosition'].toLowerCase() === 'top'){
+        $(".barValue").css({"align-self": "baseline", "text-align": "center"});
+      }
+      else if (chartOptions['barValuePosition'].toLowerCase() === 'centre'){
+        $(".barValue").css({"align-self": "center", "text-align": "center"});
+      }
+      else if (chartOptions['barValuePosition'].toLowerCase() === 'bottom'){
+        $(".barValue").css({"align-self": "end", "text-align": "center"});
+      }
+
+    }
+
   }
 
   function setOptions(options, data){
