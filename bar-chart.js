@@ -196,9 +196,7 @@ function drawBarChart(data, options, element){
     }
 
     // Locate the Div mentioned and insert the chart inside it.
-    document.getElementById( element.slice(1) ).innerHTML = barChart;
-
-    // set the grid background based on the amount of bars
+    $(element).html( barChart );
 
     let gridWidth = (chart['highestValue'] - chart['lowestValue']) / $(".container-2").width();
     let gridHeight = (chart['highestValue'] - chart['lowestValue']) / $(".container-2").height();
