@@ -58,6 +58,9 @@ function drawBarChart(data, options, element){
     labelColours: 'blue',
     labelName: 'Label',
     barSpacing: '2%',
+    barValueFontSize: '15px',
+    barValueWeight: "normal",
+    barValueColour: '#ffffff',
     barValuePosition: 'top' // 'top', 'centre', or 'bottom'
   }
 
@@ -91,21 +94,6 @@ function drawBarChart(data, options, element){
       }
     }
 
-    // if the options contains a custom width
-    if( options.hasOwnProperty('width') ) {
-      $(`${element}`).css("width", options['width']);
-    }
-    else {
-      $(`${element}`).css("width", chartOptions['width']);
-    }
-
-    // if the options contains a custom height
-    if( options.hasOwnProperty('height') ) {
-      $(`${element}`).css("height", options['height']);
-    }
-    else {
-      $(`${element}`).css("height", chartOptions['height']);
-    }
 
     // variables for default settings
     let highestIndex = highestNumber;
@@ -206,10 +194,29 @@ function drawBarChart(data, options, element){
     // Locate the Div mentioned and insert the chart inside it.
     $(element).html( barChart );
 
-    let gridWidth = (chart['highestValue'] - chart['lowestValue']) / $(".container-2").width();
-    let gridHeight = (chart['highestValue'] - chart['lowestValue']) / $(".container-2").height();
+    // function Assigns options if exist, else assigns chartOptions default settings.
+    function assignOptions(selectorPath, cssPropertyName, optionsName){
+      if( options.hasOwnProperty(cssPropertyName) ) {
+        $(selectorPath).css(cssPropertyName, options[optionsName]);
+      } else {
+        $(selectorPath).css(cssPropertyName, chartOptions[optionsName]);
+      }
+    }
 
-    console.log("Height: " + gridHeight + "Width: " + gridWidth)
+    // Assign the "font-size" based on options['barValueFontSize']
+    assignOptions(`${element} > .container-1 > .container-2 > .bar > .bar-highlight > .barValue`,"font-size",'barValueFontSize');
+
+    // Assign the "font-size" based on options['barValueColour']
+    assignOptions(`${element} > .container-1 > .container-2 > .bar > .bar-highlight > .barValue`,"color",'barValueColour');
+
+    // Assign the "font-size" based on options['barValueWeight']
+    assignOptions(`${element} > .container-1 > .container-2 > .bar > .bar-highlight > .barValue`,"font-weight",'barValueWeight');
+
+    // Assign the Chart's Width
+    assignOptions(`${element}`,"width","width");
+
+    // Assign the Chart's Height
+    assignOptions(`${element}`,"height","height");
 
     let gridIncrement = chart['highestValue'];
 
