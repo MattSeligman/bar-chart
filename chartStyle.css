@@ -79,13 +79,6 @@ html, body{
 	width: 100%;
   height: auto;
   padding: 10px;
-
-  /* Font Controls */
-  color: white;
-  font-size: 25px;
-  font-weight: bold;
-  /* Font Controls - To be setup in Options */
-
 }
 
 .bar-highlight{
