@@ -46,23 +46,23 @@ function drawBarChart(data, options, element){
   // prepare a variable to track the highest number (100%)
   let highestNumber = chart['highestValue'];
 
+  // Default chart options
+  let chartOptions = {
+    height: '100%',
+    width: '98%',
+    verticalAxis: false,
+    stacked: false,
+    titleFontSize: '15px',
+    titleFontColour: 'green',
+    barColour: 'blue',
+    labelColours: 'blue',
+    labelName: 'Label',
+    barSpacing: '2%',
+    barValuePosition: 'top' // 'top', 'centre', or 'bottom'
+  }
+
   // draws the chart layout
   function drawChartLayout(data, options, element){
-
-    // Default chart options
-    let chartOptions = {
-      height: '100%',
-      width: '98%',
-      verticalAxis: false,
-      stacked: false,
-      titleFontSize: '15px',
-      titleFontColour: 'blue',
-      barColours: 'blue',
-      labelColours: 'blue',
-      labelName: 'Label',
-      barSpacing: '2%',
-      barValuePosition: 'top' // 'top', 'centre', or 'bottom'
-    }
 
     // if the chart is a verticalAxis assign the vertical properties
     if (options['verticalAxis'] === true ){
@@ -92,12 +92,20 @@ function drawBarChart(data, options, element){
     }
 
     // if the options contains a custom width
-    if( options.hasOwnProperty('width') ) { document.getElementById( element.slice(1) ).style.width = options['width']; }
-    else { document.getElementById( element.slice(1) ).style.width = chartOptions['width']; }
+    if( options.hasOwnProperty('width') ) {
+      $(`${element}`).css("width", options['width']);
+    }
+    else {
+      $(`${element}`).css("width", chartOptions['width']);
+    }
 
     // if the options contains a custom height
-    if( options.hasOwnProperty('height') ) { document.getElementById( element.slice(1) ).style.height = options['height']; }
-    else { document.getElementById( element.slice(1) ).style.height = chartOptions['height']; }
+    if( options.hasOwnProperty('height') ) {
+      $(`${element}`).css("height", options['height']);
+    }
+    else {
+      $(`${element}`).css("height", chartOptions['height']);
+    }
 
     // variables for default settings
     let highestIndex = highestNumber;
@@ -207,52 +215,56 @@ function drawBarChart(data, options, element){
 
     if (options['verticalAxis'] === true ){
 
-      $(".left").css("align-content", 'space-around' );
-      $(".container-2").css("background-size", `calc( (1 / ${gridIncrement}) * 100% ) calc( (1 / ${chart['amountOfBars']} ) * 100% )` );
+      $(`${element} > .container-1 > .left`).css("align-content", 'space-around' );
+      $(`${element} > .container-1 > .container-2`).css("background-size", `calc( (1 / ${gridIncrement}) * 100% ) calc( (1 / ${chart['amountOfBars']} ) * 100% )` );
 
       if (chartOptions['barValuePosition'].toLowerCase() === 'top'){
-        $(".barValue").css({"align-self": "center", "text-align": "right"});
+        $(`${element} > .container-1 > .container-2 > .bar > .bar-highlight > .barValue`).css({"align-self": "center", "text-align": "right"});
       }
       else if (chartOptions['barValuePosition'].toLowerCase() === 'centre'){
-        $(".barValue").css({"align-self": "center", "text-align": "center"});
+        $(`${element} > .container-1 > .container-2 > .bar > .bar-highlight > .barValue`).css({"align-self": "center", "text-align": "center"});
       }
       else if (chartOptions['barValuePosition'].toLowerCase() === 'bottom'){
-        $(".barValue").css({"align-self": "center", "text-align": "left"});
+        $(`${element} > .container-1 > .container-2 > .bar > .bar-highlight > .barValue`).css({"align-self": "center", "text-align": "left"});
       }
 
     } else {
 
       $(".left").css("align-content", 'space-between' );
-      $(".container-2").css("background-size", `calc( (1 / ${chart['amountOfBars']}) * 100% ) calc( (1 / ${gridIncrement} ) * 100% )` );
+      $(`${element} > .container-1 > .container-2`).css("background-size", `calc( (1 / ${chart['amountOfBars']}) * 100% ) calc( (1 / ${gridIncrement} ) * 100% )` );
 
       if (chartOptions['barValuePosition'].toLowerCase() === 'top'){
-        $(".barValue").css({"align-self": "baseline", "text-align": "center"});
+        $(`${element} > .container-1 > .container-2 > .bar > .bar-highlight > .barValue`).css({"align-self": "baseline", "text-align": "center"});
       }
       else if (chartOptions['barValuePosition'].toLowerCase() === 'centre'){
-        $(".barValue").css({"align-self": "center", "text-align": "center"});
+        $(`${element} > .container-1 > .container-2 > .bar > .bar-highlight > .barValue`).css({"align-self": "center", "text-align": "center"});
       }
       else if (chartOptions['barValuePosition'].toLowerCase() === 'bottom'){
-        $(".barValue").css({"align-self": "end", "text-align": "center"});
+        $(`${element} > .container-1 > .container-2 > .bar > .bar-highlight > .barValue`).css({"align-self": "end", "text-align": "center"});
       }
 
     }
 
   }
 
-  function setOptions(options, data){
+  function setOptions(options, element){
 
     // If options has titleFontSize
     if( options.hasOwnProperty('titleFontSize') ){
 
       // Update the titleFontSize
-      $(".chartTitle > h2").css("font-size", options['titleFontSize'] );
+      $(`${element} > .chartTitle > h2`).css("font-size", options['titleFontSize'] );
     }
 
     // If options has titleFontColour
     if( options.hasOwnProperty('titleFontColour') ){
 
       // Update the titleFontSize
-      $(".chartTitle > h2").css("color", options['titleFontColour'] );
+      $(`${element} > .chartTitle > h2`).css("color", options['titleFontColour'] );
+    } else {
+
+      // Update the titleFontSize using the default chartOptions
+      $(`${element} > .chartTitle > h2`).css("color", chartOptions['titleFontColour'] );
     }
 
     // If options has barColour
@@ -322,7 +334,7 @@ function drawBarChart(data, options, element){
   // Draw the Chart
   drawChartLayout(data, options, element);
 
-  setOptions(options, data);
+  setOptions(options, element);
 
 }
 
