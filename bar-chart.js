@@ -3,41 +3,48 @@ function drawBarChart(data, options, element){
   // return the values passed from HTML page
   console.log(data,options, element);
 
-  // prepare a variable to track the highest number (100%)
-  let highestNumber = null;
-
-  // determine the highest Value
-  function findHighestNumber(data){
-
-    // loop through the data
-    for( let i = 0; i < data.length; i++ ){
-
-      // if the data is an object
-      if(typeof data[i] === 'object'){
-
-        // if highestNumber is less than the current objects value
-        if (highestNumber < Object.values(data[i])[0]) {
-
-          // update the highestNumber
-          highestNumber = Object.values(data[i])[0];
-        }
-
-      // else if the data is a number
-      } else if(typeof data[i] === 'number'){
-
-        // if the highestNumber less than the current value
-        if (highestNumber < data[i]) {
-
-          // update the highestNumber
-          highestNumber = data[i];
-        }
-      }
-    }
-    return highestNumber;
+  // object to track attributes for chart
+  let chart = {
+    'highestValue':null,
+    'lowestValue':null,
+    'amountOfBars': data.length
   }
 
-  // assign the highest number
-  findHighestNumber(data);
+  function determineIndexRange(data){
+
+    // loop through the bars
+    for( let i = 0; i < chart['amountOfBars']; i++ ){
+
+      let indexNumber = data[i];
+
+      // if the data is an object formamt the indexNumber for object values
+      if(typeof data[i] === 'object'){
+
+        // set indexNumber to the data value within the object (0 may need to be changed for stacked charts)
+        indexNumber = Object.values(data[i])[0];
+      }
+
+      // if the chart['lowestValue'] is false (no value) or the indexNumber is less than the chart['lowestValue']
+      if (!chart['lowestValue'] || indexNumber < chart['lowestValue']) {
+
+        // update the chart['lowestValue'] to indexNumber
+        chart['lowestValue'] = indexNumber;
+      }
+
+      // if the indexNumber is greater than the chart['highestValue']
+      if (indexNumber >= chart['highestValue']) {
+
+        // update the chart['highestValue'] to indexNumber
+        chart['highestValue'] = indexNumber;
+      }
+    }
+  }
+
+  // assigns determined index range (highest & lowest) for the charts use
+  determineIndexRange(data);
+
+  // prepare a variable to track the highest number (100%)
+  let highestNumber = chart['highestValue'];
 
   // draws the chart layout
   function drawChartLayout(data, options, element){
@@ -57,13 +64,13 @@ function drawBarChart(data, options, element){
       barValuePosition: 'top' // 'top', 'centre', or 'bottom'
     }
 
-    let chart = {};
-
+    // if the chart is a verticalAxis assign the vertical properties
     if (options['verticalAxis'] === true ){
 
       chart['type'] = 'vertical';
       chart['barProperty'] = 'width';
 
+    // if the chart isn't a verticalAxis assign the horizontal properties
     } else {
 
       chart['type'] = 'horizontal';
@@ -101,15 +108,15 @@ function drawBarChart(data, options, element){
     let theIndexs = '';
 
     // if the highestIndex (highestNumber) is greater or equal to zero
-    for(i = highestIndex; highestIndex >= 0; highestIndex--){
+    for(i = highestIndex; i >= 0 ; i--){
 
-      theIndexs += `<label>${highestIndex}</label>`;
-
+      if (i % 5 === 0 || i === highestIndex){
+        theIndexs += `<label>${i}</label>`;
+      }
     }
 
-    console.log(theIndexs)
     // loop through the bar data entries
-    for(i = 0; i < data.length; i++){
+    for(i = 0; i < chart['amountOfBars']; i++){
 
 
       // if this bar's data is an object
@@ -192,11 +199,18 @@ function drawBarChart(data, options, element){
     document.getElementById( element.slice(1) ).innerHTML = barChart;
 
     // set the grid background based on the amount of bars
-    $(".container-2").css("background-size", `calc( (1 / ${highestNumber} ) * 100% ) calc( (1 / ${highestNumber} ) * 100% )` );
+
+    let gridWidth = (chart['highestValue'] - chart['lowestValue']) / $(".container-2").width();
+    let gridHeight = (chart['highestValue'] - chart['lowestValue']) / $(".container-2").height();
+
+    console.log("Height: " + gridHeight + "Width: " + gridWidth)
+
+    let gridIncrement = chart['highestValue'];
 
     if (options['verticalAxis'] === true ){
 
       $(".left").css("align-content", 'space-around' );
+      $(".container-2").css("background-size", `calc( (1 / ${gridIncrement}) * 100% ) calc( (1 / ${chart['amountOfBars']} ) * 100% )` );
 
       if (chartOptions['barValuePosition'].toLowerCase() === 'top'){
         $(".barValue").css({"align-self": "center", "text-align": "right"});
@@ -211,6 +225,7 @@ function drawBarChart(data, options, element){
     } else {
 
       $(".left").css("align-content", 'space-between' );
+      $(".container-2").css("background-size", `calc( (1 / ${chart['amountOfBars']}) * 100% ) calc( (1 / ${gridIncrement} ) * 100% )` );
 
       if (chartOptions['barValuePosition'].toLowerCase() === 'top'){
         $(".barValue").css({"align-self": "baseline", "text-align": "center"});
