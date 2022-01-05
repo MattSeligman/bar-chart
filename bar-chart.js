@@ -54,7 +54,7 @@ function drawBarChart(data, options, element){
     stacked: false,
     titleFontSize: '15px',
     titleFontColour: 'green',
-    barColour: 'blue',
+    barColour: ['grey','#ccc'],
     labelColours: 'blue',
     labelName: 'Label',
     barSpacing: '2%',
@@ -102,6 +102,7 @@ function drawBarChart(data, options, element){
     let theBars = '';
     let theLabels = '';
     let theIndexs = '';
+    let barColour = `background-color: ${chartOptions['barColour']}`;
 
     // if the highestIndex (highestNumber) is greater or equal to zero
     for(i = highestIndex; i >= 0 ; i--){
@@ -111,9 +112,42 @@ function drawBarChart(data, options, element){
       }
     }
 
+    let colourIndex = 0;
     // loop through the bar data entries
     for(i = 0; i < chart['amountOfBars']; i++){
 
+      // if the colourIndex passes the length
+      if ( colourIndex >= chartOptions['barColour'].length){
+
+        // reset the colourIndex
+        colourIndex = 0;
+      }
+
+      if ( options.hasOwnProperty('barColour') ){
+
+        if( options['barColour'].length === 1){
+          barColour = `background-color: ${options['barColour']}`;
+        }
+
+        if( options['barColour'].length >= 2){
+          barColour = `background-color: ${options['barColour'][colourIndex]}`;
+          colourIndex ++;
+        }
+
+      } else
+
+      if ( chartOptions.hasOwnProperty('barColour') ){
+
+        if( chartOptions['barColour'].length === 1){
+          barColour = `background-color: ${chartOptions['barColour']}`;
+        }
+
+        if( chartOptions['barColour'].length >= 2){
+          barColour = `background-color: ${chartOptions['barColour'][colourIndex]}`;
+          colourIndex ++;
+        }
+
+      }
 
       // if this bar's data is an object
       if (typeof data[i] === 'object'){
@@ -148,7 +182,7 @@ function drawBarChart(data, options, element){
         // format the bar for Vertical Axis
         theBars += `
         <div class="bar">
-          <div class="bar-highlight" style="${chart['barProperty']}:${((currentBarValue / highestNumber) * 100 )}%;">
+          <div class="bar-highlight" style="${chart['barProperty']}:${((currentBarValue / highestNumber) * 100 )}%; ${barColour}">
             <div class="barValue">${currentBarValue}</div>
           </div>
         </div>`;
@@ -163,7 +197,7 @@ function drawBarChart(data, options, element){
         // format the bar for Horizontal Axis
         theBars += `
         <div class="bar">
-          <div class="bar-highlight" style="${chart['barProperty']}:${((currentBarValue / highestNumber) * 100 )}%;">
+          <div class="bar-highlight" style="${chart['barProperty']}:${((currentBarValue / highestNumber) * 100 )}%; ${barColour}">
             <div class="barValue">${currentBarValue}</div>
           </div>
           ${theBottomDisplay}
