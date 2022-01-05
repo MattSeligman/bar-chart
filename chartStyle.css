@@ -46,16 +46,16 @@ html, body{
 
 .horizontal {
   background-image:
-    linear-gradient(to top, #ccc 1px, transparent 1px),
-    linear-gradient(to left, #ccc 1px, transparent 1px);
+    linear-gradient(to top, #ccc 2px, transparent 2px),
+    linear-gradient(to left, #ccc 2px, transparent 2px);
 }
 
 .vertical {
 	flex-direction: column;
 
   background-image:
-    linear-gradient(to right, #ccc 1px, transparent 1px),
-    linear-gradient(to bottom, #ccc 1px, transparent 1px);
+    linear-gradient(to right, #ccc 2px, transparent 2px),
+    linear-gradient(to bottom, #ccc 2px, transparent 2px);
 }
 
 #verticalIndex {
