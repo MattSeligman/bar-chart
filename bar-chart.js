@@ -1,14 +1,43 @@
 function drawBarChart(data, options, element){
 
   // return the values passed from HTML page
-  console.log(data,options, element);
+  console.log("== Start of Chart ==")
+  console.log(data);
 
   // object to track attributes for chart
   let chart = {
     'highestValue':null,
     'lowestValue':null,
-    'amountOfBars': data.length
+    'amountOfBars': data.length,
+    'barValues': []
   }
+
+  // increment through the data bar's provided
+  for (let i = 0; i < data.length; i++){
+
+    // if the data is an object (contains custom labels/categories)
+    if(typeof data[i] === 'object'){
+
+      // for each value in the current data[i]
+      for(var value in data[i]) {
+
+        // add the barValue value to the chart['barValues']
+        chart['barValues'].push( data[i][value] );
+      }
+
+    // if the data isn't an object
+    } else {
+
+      // add the barValue to the chart['barValues']
+      chart['barValues'].push( data[i] );
+    }
+  }
+
+  // Sort the barValues in accending order
+  chart['barValues'] = chart['barValues'].sort( (a,b) => a-b );
+
+  // Reverse the chart['barValues'] used for stacked bars
+  chart['barValues'].reverse();
 
   function determineIndexRange(data){
 
@@ -81,8 +110,6 @@ function drawBarChart(data, options, element){
 
     }
 
-    console.log(chart)
-
     // check through the default chartOptions
     for (let eachOption in chartOptions){
 
@@ -113,6 +140,7 @@ function drawBarChart(data, options, element){
     }
 
     let colourIndex = 0;
+
     // loop through the bar data entries
     for(i = 0; i < chart['amountOfBars']; i++){
 
@@ -179,13 +207,28 @@ function drawBarChart(data, options, element){
         // set theBottomDisplay to the current Index
         theBottomDisplay = `${theIndexs}`;
 
-        // format the bar for Vertical Axis
-        theBars += `
-        <div class="bar">
-          <div class="bar-highlight" style="${chart['barProperty']}:${((currentBarValue / highestNumber) * 100 )}%; ${barColour}">
-            <div class="barValue">${currentBarValue}</div>
-          </div>
-        </div>`;
+        if (chartOptions['stacked']){
+
+          // format the bar for stackedBar
+          theBars += `
+          <div class="bar" style="${chart['barProperty']}:${((currentBarValue / highestNumber) * 100 )}%;">
+            <div class="bar-highlight" style="${barColour}; ${chart['barProperty']}:100%; ">
+              <div class="barValue">${currentBarValue}</div>
+            </div>
+          </div>`;
+
+        } else {
+
+          // format the bar for Vertical Axis
+          theBars += `
+          <div class="bar">
+            <div class="bar-highlight" style="${chart['barProperty']}:${((currentBarValue / highestNumber) * 100 )}%; ${barColour}">
+              <div class="barValue">${currentBarValue}</div>
+            </div>
+          </div>`;
+
+
+        }
 
       } else {
         // set theLeftDisplay to Index
@@ -237,6 +280,11 @@ function drawBarChart(data, options, element){
       }
     }
 
+    if(chartOptions['stacked']){
+      // Assign the "font-size" based on options['barValueFontSize']
+      $(`${element} > .container-1 > .container-2`).css('flex-direction','row');
+      $(`${element} > .container-1 > .container-2 > .bar`).css('height','auto');
+    }
     // Assign the "font-size" based on options['barValueFontSize']
     assignOptions(`${element} > .container-1 > .container-2 > .bar > .bar-highlight > .barValue`,"font-size",'barValueFontSize');
 
