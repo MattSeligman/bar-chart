@@ -58,6 +58,31 @@ html, body{
     linear-gradient(to bottom, #ccc 2px, transparent 2px);
 }
 
+.legendColour {
+	height: 10px;
+	width: 10px;
+	margin-top: 5px;
+	border-radius: 100px;
+	margin-right: 3px;
+}
+
+.legendCategory{
+  display: flex;
+  flex-direction: row;
+}
+#horizontalIndex {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+#horizontalIndex > .legendCategory {
+	margin: 2px auto 0px 3px;
+}
+
+#horizontalIndex > label {
+  margin-right: 5px;
+}
+
 #verticalIndex {
 	display: flex;
 	flex-flow: row-reverse;
