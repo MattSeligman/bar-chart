@@ -1,7 +1,7 @@
 function drawBarChart(data, options, element){
 
   // return the values passed from HTML page
-  console.log("== Start of Chart ==")
+  console.log("== Start of " + element + " ==")
   console.log(data);
 
   // object to track attributes for chart
@@ -182,7 +182,13 @@ function drawBarChart(data, options, element){
 
         // assign the currentLabel
         currentLabel = `<label>${Object.keys(data[i])[0]}</label>`;
-        theLabels += `<label>${Object.keys(data[i])[0]}</label>`;
+
+        if(chartOptions['stacked']){
+          theLabels += `<div class="legendCategory"><div class="legendColour" style="${barColour}"></div><label>${Object.keys(data[i])[0]}</label></div>`;
+
+        } else {
+          theLabels += `<label>${Object.keys(data[i])[0]}</label>`;
+        }
 
         // assign the currentBarValue
         currentBarValue = Object.values(data[i])[0];
@@ -191,14 +197,20 @@ function drawBarChart(data, options, element){
 
         // assign the currentLabel
         currentLabel = `<label>${chartOptions['labelName']} ${(i + 1)}</label>`;
-        theLabels += `<label>${chartOptions['labelName']} ${(i + 1)}</label>`;
+
+        if(chartOptions['stacked']){
+          theLabels += `<div class="legendCategory"><div class="legendColour" style="${barColour}"></div><label>${chartOptions['labelName']} ${(i + 1)}</label></div>`;
+
+        } else {
+          theLabels += `<label>${chartOptions['labelName']} ${(i + 1)}</label>`;
+        }
 
 
         // assign the currentBarValue
         currentBarValue = data[i];
       }
 
-      // if the chartOptions verticalAxis is true
+      // if chartOptions['verticalAxis'] === true (Chart is Vertical)
       if (chartOptions['verticalAxis']){
 
         // set theLeftDisplay to labels
@@ -207,44 +219,60 @@ function drawBarChart(data, options, element){
         // set theBottomDisplay to the current Index
         theBottomDisplay = `${theIndexs}`;
 
+        // if chartOptions['verticalAxis'] === true && chartOptions['stacked'] === true
         if (chartOptions['stacked']){
 
           // format the bar for stackedBar
           theBars += `
-          <div class="bar" style="${chart['barProperty']}:${((currentBarValue / highestNumber) * 100 )}%;">
+          <div class="bar" style="${chart['barProperty']}:${((currentBarValue / highestNumber) * 100 )}%; order='';">
             <div class="bar-highlight" style="${barColour}; ${chart['barProperty']}:100%; ">
               <div class="barValue">${currentBarValue}</div>
             </div>
           </div>`;
 
+        // if chartOptions['verticalAxis'] === true && chartOptions['stacked'] === false
         } else {
 
-          // format the bar for Vertical Axis
           theBars += `
           <div class="bar">
             <div class="bar-highlight" style="${chart['barProperty']}:${((currentBarValue / highestNumber) * 100 )}%; ${barColour}">
               <div class="barValue">${currentBarValue}</div>
             </div>
           </div>`;
-
-
         }
 
+      // if chartOptions['verticalAxis'] === false ( Chart is Horizontal)
       } else {
+
         // set theLeftDisplay to Index
         theLeftDisplay = `${theIndexs}`;
 
         // set theBottomDisplay to the current Label
         theBottomDisplay = `${currentLabel}`;
 
-        // format the bar for Horizontal Axis
-        theBars += `
-        <div class="bar">
-          <div class="bar-highlight" style="${chart['barProperty']}:${((currentBarValue / highestNumber) * 100 )}%; ${barColour}">
-            <div class="barValue">${currentBarValue}</div>
-          </div>
-          ${theBottomDisplay}
-        </div>`;
+        // if chartOptions['stacked'] === true
+        if (chartOptions['stacked']){
+
+          // format the bar for Stacked Horizontal Axis
+          theBars += `
+          <div class="bar" style="${chart['barProperty']}:${((currentBarValue / highestNumber) * 100 )}%;">
+            <div class="bar-highlight" style="${chart['barProperty']}: 100%; ${barColour}">
+              <div class="barValue">${currentBarValue}</div>
+            </div>
+          </div>`;
+
+        // if chartOptions['verticalAxis'] === false && chartOptions['stacked'] === false
+        } else {
+
+          // format the bar for Horizontal Axis
+          theBars += `
+          <div class="bar">
+            <div class="bar-highlight" style="${chart['barProperty']}:${((currentBarValue / highestNumber) * 100 )}%; ${barColour}">
+              <div class="barValue">${currentBarValue}</div>
+            </div>
+            ${theBottomDisplay}
+          </div>`;
+        }
 
       }
 
@@ -252,7 +280,7 @@ function drawBarChart(data, options, element){
 
     let barChart = `
     <div class="chartTitle">
-      <h2>Bar Chart</h2>
+      <h2>${element}</h2>
     </div>
 
     <div class="container-1">
@@ -264,9 +292,14 @@ function drawBarChart(data, options, element){
       </div>
     </div>`;
 
+    // if the chart has a verticalAxis place the index at the end of the barChart.
     if (chartOptions['verticalAxis']){
       barChart += `<div id="verticalIndex">${theBottomDisplay}</div>`;
     }
+    else if ( chartOptions['verticalAxis'] === false && chartOptions['stacked'] === true ) {
+      barChart += `<div id="horizontalIndex">${theLabels}</div>`;
+    }
+
 
     // Locate the Div mentioned and insert the chart inside it.
     $(element).html( barChart );
@@ -281,9 +314,49 @@ function drawBarChart(data, options, element){
     }
 
     if(chartOptions['stacked']){
-      // Assign the "font-size" based on options['barValueFontSize']
-      $(`${element} > .container-1 > .container-2`).css('flex-direction','row');
-      $(`${element} > .container-1 > .container-2 > .bar`).css('height','auto');
+
+      if(chartOptions['verticalAxis']){
+
+        // Assign the "font-size" based on options['barValueFontSize']
+        $(`${element} > .container-1 > .container-2`).css('flex-direction','row');
+        $(`${element} > .container-1 > .container-2 > .bar`).css('height','50px');
+
+        // copy the sidebar width for the margin-left
+        $(`${element} > #verticalIndex`).css('margin-left', `${$(`${element} > .container-1 > #sidebar`).width() + 5}px` );
+
+        // reset left-margin if window is resized
+        window.addEventListener('resize', function() {
+
+          // copy the sidebar width for the margin-left
+          $(`${element} > #verticalIndex`).css('margin-left', `${$(`${element} > .container-1 > #sidebar`).width() + 5}px` );
+
+        });
+
+
+      // if horizontal & stacked
+      } else {
+        $(`${element} > .container-1 > .container-2`).css('flex-direction','column-reverse');
+        $(`${element} > .container-1 > .container-2`).css('flex-wrap','wrap');
+        $(`${element} > .container-1 > .container-2`).css('justify-content','stretch');
+        $(`${element} > #horizontalIndex`).css('margin-left', `${$(`${element} > .container-1 > #sidebar`).width() + 10}px` );
+
+
+        // reset left-margin if window is resized
+        window.addEventListener('resize', function() {
+
+          // copy the sidebar width for the margin-left
+          $(`${element} > #horizontalIndex`).css('margin-left', `${$(`${element} > .container-1 > #sidebar`).width() + 10}px` );
+
+          // copy the sidebar width for the margin-left
+          $(`${element} > #horizontalIndex`).css('width', `${$(`${element} > .container-1 > .container-2`).width()}px` );
+
+        });
+
+
+        $(`${element} > .container-1 > .container-2 > .bar`).css('width','inherit');
+        $(`${element} > .container-1 > .container-2 > .bar > .bar-highlight`).css('width','100%');
+      }
+
     }
     // Assign the "font-size" based on options['barValueFontSize']
     assignOptions(`${element} > .container-1 > .container-2 > .bar > .bar-highlight > .barValue`,"font-size",'barValueFontSize');
@@ -371,23 +444,11 @@ function drawBarChart(data, options, element){
         // if the colourIndex is less than the barColour's length
         if (colourIndex < options['barColour'].length){
 
-          // assign the current bar the current barColour based on the current index.
-          bar.style.backgroundColor = options['barColour'][colourIndex];
-
-          // increment to next colour
-          colourIndex++;
-
-        // otherwise
-        } else {
-
-          // reset the colourIndex back to the start
-          colourIndex = 0;
+          // loop through the colours
+          colourIndex--;
 
           // assign the current bar the current barColour based on the current index.
           bar.style.backgroundColor = options['barColour'][colourIndex];
-
-          // increment to next colour
-          colourIndex++;
         }
       }
     }
