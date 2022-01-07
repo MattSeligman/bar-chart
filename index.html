@@ -33,7 +33,7 @@
               barColour: [ 'blue', 'orange', 'red', 'gray', '#964b00', 'purple', 'green' ],
               barValueColour: "white",
               barValueWeight: "bold",
-              barValueFontSize: "large",
+              barValueFontSize: "10px",
               labelFontSize: '15px',
               labelColour: [ 'red', 'blue' ],
               barSpacing: '0px',
@@ -45,7 +45,31 @@
         </script>
 
   <br><br>
-  <div id="chart3"></div>
+  <div id="chart4"></div>
+  <script>
+  drawBarChart(
+    [ 1,2,3,4,5,6,7,8,6,2,10 ],
+      {
+        verticalAxis: false,
+        stacked: true,
+        width: '50%',
+        height: '100%',
+        barColour: [ 'blue', 'orange', 'red', 'gray', '#964b00', 'purple', 'green','cyan' ],
+        barValueColour: "white",
+        barValueWeight: "bold",
+        barValueFontSize: "10px",
+        labelFontSize: '15px',
+        labelColour: [ 'red', 'blue' ],
+        barSpacing: '0px',
+        titleFontSize: '15px',
+        titleFontColour: 'orange'
+        },
+        '#chart4'
+        )
+  </script>
+
+<br><br>
+<div id="chart3"></div>
   <script>
   drawBarChart(
     [
