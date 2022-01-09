@@ -9,7 +9,8 @@ function drawBarChart(data, options, element){
     'highestValue':null,
     'lowestValue':null,
     'amountOfBars': data.length,
-    'barValues': []
+    'barValues': [],
+    'stackedOrder': []
   }
 
   // increment through the data bar's provided
@@ -33,11 +34,22 @@ function drawBarChart(data, options, element){
     }
   }
 
-  // Sort the barValues in accending order
-  chart['barValues'] = chart['barValues'].sort( (a,b) => a-b );
+  // copy the barOrder from the generated chart['barValues']
+  let barOrder = chart['barValues'];
 
-  // Reverse the chart['barValues'] used for stacked bars
-  chart['barValues'].reverse();
+  // create new sorted array by sorting in decending order
+  let sortedOrder = [...barOrder].sort((a,b) => b-a );
+
+  console.log(`Original Order: ${chart['barValues']}`)
+  console.log(`Sorted Order: ${sortedOrder}`);
+
+  // for(i = 0; i < sortedOrder.length; i++){
+  //   console.log(`Original: The number ${barOrder[i]} is placed in ${ $( barOrder ).index( $( sortedOrder ).slice( i ) ) } in the sortedOrder `);
+  // }
+
+  for(i = 0; i < sortedOrder.length; i++){
+    chart['stackedOrder'].push( $( barOrder ).index( $( sortedOrder ).slice( i ) ) );
+  }
 
   function determineIndexRange(data){
 
@@ -93,22 +105,27 @@ function drawBarChart(data, options, element){
     barValuePosition: 'top' // 'top', 'centre', or 'bottom'
   }
 
+  // if options['verticalAxis'] is true
+  if (options['verticalAxis'] === true ){
+
+    // set chart['type'] to vertical settings
+    chart['type'] = 'vertical';
+
+    // set chart['barProperty'] to width for a verticalAxis
+    chart['barProperty'] = 'width';
+
+  // if options['verticalAxis'] is false set to horizontal chart settings
+  } else {
+
+    // set chart['type'] to horizontal settings
+    chart['type'] = 'horizontal';
+
+    // set chart['barProperty'] to height for a verticalAxis
+    chart['barProperty'] = 'height';
+  }
+
   // draws the chart layout
   function drawChartLayout(data, options, element){
-
-    // if the chart is a verticalAxis assign the vertical properties
-    if (options['verticalAxis'] === true ){
-
-      chart['type'] = 'vertical';
-      chart['barProperty'] = 'width';
-
-    // if the chart isn't a verticalAxis assign the horizontal properties
-    } else {
-
-      chart['type'] = 'horizontal';
-      chart['barProperty'] = 'height';
-
-    }
 
     // check through the default chartOptions
     for (let eachOption in chartOptions){
@@ -120,7 +137,6 @@ function drawBarChart(data, options, element){
         chartOptions[eachOption] = options[eachOption];
       }
     }
-
 
     // variables for default settings
     let highestIndex = highestNumber;
@@ -207,7 +223,6 @@ function drawBarChart(data, options, element){
           theLabels += `<label>${chartOptions['labelName']} ${(i + 1)}</label>`;
         }
 
-
         // assign the currentBarValue
         currentBarValue = data[i];
       }
@@ -226,7 +241,7 @@ function drawBarChart(data, options, element){
 
           // format the bar for stackedBar
           theBars += `
-          <div class="bar" style="${chart['barProperty']}:${((currentBarValue / highestNumber) * 100 )}%; order='';">
+          <div class="bar" data-sort="${chart['stackedOrder'][i]}" style="${chart['barProperty']}:${((currentBarValue / highestNumber) * 100 )}%;">
             <div class="bar-highlight" style="${barColour}; ${chart['barProperty']}:100%; ">
               <div class="barValue">${currentBarValue}</div>
             </div>
@@ -255,9 +270,9 @@ function drawBarChart(data, options, element){
         // if chartOptions['stacked'] === true
         if (chartOptions['stacked']){
 
-          // format the bar for Stacked Horizontal Axis
+          // format the bar for stacked horizontal axis
           theBars += `
-          <div class="bar" order="${currentOrder}" value="${currentBarValue}" style="${chart['barProperty']}:${((currentBarValue / highestNumber) * 100 )}%;">
+          <div class="bar" data-sort="${chart['stackedOrder'][i]}" value="${currentBarValue}" style="${chart['barProperty']}:${((currentBarValue / highestNumber) * 100 )}%;">
             <div class="bar-highlight" style="${chart['barProperty']}: 100%; ${barColour}">
               <div class="barValue">${currentBarValue}</div>
             </div>
@@ -344,6 +359,16 @@ function drawBarChart(data, options, element){
 
   // applies setOptions or runs default chartOptions.
   function setOptions(options, element){
+
+    if(options['stacked']){
+
+      console.log(`Correct Index Order: ${chart['stackedOrder']}`)
+      // Determine how to RE-ORDER based on stackedOrder Index
+      for(i = 0; i <= chart['stackedOrder'].length; i++){
+      //  $(`${element} .container-1 > .container-2 > .bar:nth-child(${chart['stackedOrder'][i]})`).css("order", `${i}` );
+      }
+
+    }
 
   // Label Attributes ----------------
     // apply 'labelFontSize' attributes if set
@@ -482,7 +507,6 @@ function drawBarChart(data, options, element){
         }
       }
     }
-
   }
 
   // Draw the Chart
