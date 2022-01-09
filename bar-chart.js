@@ -1,7 +1,7 @@
 function drawBarChart(data, options, element){
 
   // return the values passed from HTML page
-  console.log("== Start of " + element + " ==")
+  console.log("== Start of " + element + " ==" + `\nType of Data: '${typeof data[0]}'`)
   console.log(data);
 
   // object to track attributes for chart
@@ -86,7 +86,7 @@ function drawBarChart(data, options, element){
     barColour: ['grey','#ccc'],
     labelColours: 'blue',
     labelName: 'Label',
-    barSpacing: '2%',
+    barSpacing: '0px',
     barValueFontSize: '15px',
     barValueWeight: "normal",
     barValueColour: '#ffffff',
@@ -143,6 +143,8 @@ function drawBarChart(data, options, element){
 
     // loop through the bar data entries
     for(i = 0; i < chart['amountOfBars']; i++){
+
+      let currentOrder = i;
 
       // if the colourIndex passes the length
       if ( colourIndex >= chartOptions['barColour'].length){
@@ -255,7 +257,7 @@ function drawBarChart(data, options, element){
 
           // format the bar for Stacked Horizontal Axis
           theBars += `
-          <div class="bar" style="${chart['barProperty']}:${((currentBarValue / highestNumber) * 100 )}%;">
+          <div class="bar" order="${currentOrder}" value="${currentBarValue}" style="${chart['barProperty']}:${((currentBarValue / highestNumber) * 100 )}%;">
             <div class="bar-highlight" style="${chart['barProperty']}: 100%; ${barColour}">
               <div class="barValue">${currentBarValue}</div>
             </div>
@@ -280,7 +282,7 @@ function drawBarChart(data, options, element){
 
     let barChart = `
     <div class="chartTitle">
-      <h2>${element}</h2>
+      <h2>${element} - Stacked: ${chartOptions['stacked']} Vertical: ${chartOptions['verticalAxis']}</h2>
     </div>
 
     <div class="container-1">
@@ -300,19 +302,120 @@ function drawBarChart(data, options, element){
       barChart += `<div id="horizontalIndex">${theLabels}</div>`;
     }
 
-
     // Locate the Div mentioned and insert the chart inside it.
     $(element).html( barChart );
 
-    // function Assigns options if exist, else assigns chartOptions default settings.
-    function assignOptions(selectorPath, cssPropertyName, optionsName){
-      if( options.hasOwnProperty(cssPropertyName) ) {
-        $(selectorPath).css(cssPropertyName, options[optionsName]);
+    // If the chart has a width apply it, otherwise apply default chartOptions['width']
+    if( options.hasOwnProperty("width") ) { $(element).css("width", options["width"]); } else { $(element).css("width", chartOptions["width"]); }
+
+    // If the chart has a height apply it, otherwise apply default chartOptions['height']
+    if( options.hasOwnProperty("height") ) { $(element).css("height", options["height"]); } else { $(element).css("height", chartOptions["height"]); }
+
+  }
+
+  // function checks attribute against Vertical & Horizontal axis and apply css accordingly
+    function applyAxisCSS(attribute, verticalSelector,verticalCSS, horizontalSelector, horizontalCSS){
+
+      // check if the options contain the attribute
+      if (options.hasOwnProperty(attribute) ) {
+
+        // if the chart is Vertical apply vertical CSS
+        if (chartOptions['verticalAxis']){
+          $(`${element} ${verticalSelector}`).css(`${verticalCSS}`, `${options[attribute]}` );
+
+        // if the chart is horizontal apply horizontal CSS
+        } else {
+          $(`${element} ${horizontalSelector}`).css(`${horizontalCSS}`, `${options[attribute]}` );
+        }
+
+      // attribute doesn't exist, set default attribute
       } else {
-        $(selectorPath).css(cssPropertyName, chartOptions[optionsName]);
+
+        // if the chart is Vertical apply vertical CSS
+        if (chartOptions['verticalAxis']){
+          $(`${element} ${verticalSelector}`).css(`${verticalCSS}`, `${chartOptions[attribute]}` );
+
+        // if the chart is horizontal apply horizontal CSS
+        } else {
+          $(`${element} ${horizontalSelector}`).css(`${horizontalCSS}`, `${chartOptions[attribute]}` );
+        }
       }
     }
 
+  // applies setOptions or runs default chartOptions.
+  function setOptions(options, element){
+
+  // Label Attributes ----------------
+    // apply 'labelFontSize' attributes if set
+    applyAxisCSS('labelFontSize', '.container-1 > .left > label', 'font-size', '.container-1 > .container-2 > .bar > label', 'font-size');
+
+
+  // Title Attributes ----------------
+
+    // apply 'titleFontSize' attributes if set
+    applyAxisCSS('titleFontSize', '.chartTitle > h2', 'font-size', '.chartTitle > h2', 'font-size');
+
+    // apply 'titleFontColour' attributes if set
+    applyAxisCSS('titleFontColour', '.chartTitle > h2', 'color', '.chartTitle > h2', 'color');
+
+  // Bar Attributes ----------------
+
+    // apply 'barValueFontSize' attributes if set
+    applyAxisCSS('barValueFontSize', '.container-1 > .container-2 > .bar > .bar-highlight > .barValue', 'font-size', '.container-1 > .container-2 > .bar > .bar-highlight > .barValue', 'font-size');
+
+    // apply 'barValueColour' attributes if set
+    applyAxisCSS('barValueColour', '.container-1 > .container-2 > .bar > .bar-highlight > .barValue', 'color', '.container-1 > .container-2 > .bar > .bar-highlight > .barValue', 'color');
+
+    // apply 'barSpacing' attributes if set
+    applyAxisCSS('barSpacing', '.container-1 > .container-2', 'row-gap', '.container-1 > .container-2', 'gap');
+
+    // apply 'barValueWeight' attributes if set
+    applyAxisCSS('barValueWeight', '.container-1 > .container-2 > .bar > .bar-highlight > .barValue', 'font-weight', '.container-1 > .container-2 > .bar > .bar-highlight > .barValue', 'font-weight');
+
+
+        let gridIncrement = chart['highestValue'];
+    $(`${element} > .container-1 > .left`).css("align-content", 'space-between' );
+
+    // apply default vertical CSS
+    if(options['verticalAxis']){
+
+      $(`${element} > #verticalIndex`).css('margin-left', `${$(`${element} .container-1 > .left > label`).outerWidth() }px` );
+      $(`${element} > .container-1 > .left`).css("align-content", 'space-around' );
+
+
+      $(`${element} > .container-1 > .container-2`).css("background-size", `calc( (1 / ${gridIncrement}) * 100% ) calc( (1 / ${chart['amountOfBars']} ) * 100% )` );
+
+      if (chartOptions['barValuePosition'].toLowerCase() === 'top'){
+        $(`${element} > .container-1 > .container-2 > .bar > .bar-highlight > .barValue`).css({"align-self": "center", "text-align": "right"});
+      }
+      else if (chartOptions['barValuePosition'].toLowerCase() === 'centre'){
+        $(`${element} > .container-1 > .container-2 > .bar > .bar-highlight > .barValue`).css({"align-self": "center", "text-align": "center"});
+      }
+      else if (chartOptions['barValuePosition'].toLowerCase() === 'bottom'){
+        $(`${element} > .container-1 > .container-2 > .bar > .bar-highlight > .barValue`).css({"align-self": "center", "text-align": "left"});
+      }
+
+
+    // apply default horizontal CSS
+    } else {
+
+      $(`${element} > .container-1 > .container-2`).css("background-size", `calc( (1 / ${chart['amountOfBars']}) * 100% ) calc( (1 / ${gridIncrement} ) * 100% )` );0
+
+      if (chartOptions['barValuePosition'].toLowerCase() === 'top'){
+          $(`${element} > .container-1 > .container-2 > .bar > .bar-highlight > .barValue`).css({"align-self": "baseline", "text-align": "center"});
+      }
+      else if (chartOptions['barValuePosition'].toLowerCase() === 'centre'){
+          $(`${element} > .container-1 > .container-2 > .bar > .bar-highlight > .barValue`).css({"align-self": "center", "text-align": "center"});
+      }
+      else if (chartOptions['barValuePosition'].toLowerCase() === 'bottom'){
+          $(`${element} > .container-1 > .container-2 > .bar > .bar-highlight > .barValue`).css({"align-self": "end", "text-align": "center"});
+      }
+
+    }
+
+
+
+    // Stacked Test Material (Will be revised)
     if(chartOptions['stacked']){
 
       if(chartOptions['verticalAxis']){
@@ -332,14 +435,11 @@ function drawBarChart(data, options, element){
 
         });
 
-
       // if horizontal & stacked
       } else {
         $(`${element} > .container-1 > .container-2`).css('flex-direction','column-reverse');
-        $(`${element} > .container-1 > .container-2`).css('flex-wrap','wrap');
         $(`${element} > .container-1 > .container-2`).css('justify-content','stretch');
         $(`${element} > #horizontalIndex`).css('margin-left', `${$(`${element} > .container-1 > #sidebar`).width() + 10}px` );
-
 
         // reset left-margin if window is resized
         window.addEventListener('resize', function() {
@@ -357,76 +457,6 @@ function drawBarChart(data, options, element){
         $(`${element} > .container-1 > .container-2 > .bar > .bar-highlight`).css('width','100%');
       }
 
-    }
-    // Assign the "font-size" based on options['barValueFontSize']
-    assignOptions(`${element} > .container-1 > .container-2 > .bar > .bar-highlight > .barValue`,"font-size",'barValueFontSize');
-
-    // Assign the "font-size" based on options['barValueColour']
-    assignOptions(`${element} > .container-1 > .container-2 > .bar > .bar-highlight > .barValue`,"color",'barValueColour');
-
-    // Assign the "font-size" based on options['barValueWeight']
-    assignOptions(`${element} > .container-1 > .container-2 > .bar > .bar-highlight > .barValue`,"font-weight",'barValueWeight');
-
-    // Assign the Chart's Width
-    assignOptions(`${element}`,"width","width");
-
-    // Assign the Chart's Height
-    assignOptions(`${element}`,"height","height");
-
-    let gridIncrement = chart['highestValue'];
-
-    if (options['verticalAxis'] === true ){
-
-      $(`${element} > .container-1 > .left`).css("align-content", 'space-around' );
-      $(`${element} > .container-1 > .container-2`).css("background-size", `calc( (1 / ${gridIncrement}) * 100% ) calc( (1 / ${chart['amountOfBars']} ) * 100% )` );
-
-      if (chartOptions['barValuePosition'].toLowerCase() === 'top'){
-        $(`${element} > .container-1 > .container-2 > .bar > .bar-highlight > .barValue`).css({"align-self": "center", "text-align": "right"});
-      }
-      else if (chartOptions['barValuePosition'].toLowerCase() === 'centre'){
-        $(`${element} > .container-1 > .container-2 > .bar > .bar-highlight > .barValue`).css({"align-self": "center", "text-align": "center"});
-      }
-      else if (chartOptions['barValuePosition'].toLowerCase() === 'bottom'){
-        $(`${element} > .container-1 > .container-2 > .bar > .bar-highlight > .barValue`).css({"align-self": "center", "text-align": "left"});
-      }
-
-    } else {
-
-      $(".left").css("align-content", 'space-between' );
-      $(`${element} > .container-1 > .container-2`).css("background-size", `calc( (1 / ${chart['amountOfBars']}) * 100% ) calc( (1 / ${gridIncrement} ) * 100% )` );
-
-      if (chartOptions['barValuePosition'].toLowerCase() === 'top'){
-        $(`${element} > .container-1 > .container-2 > .bar > .bar-highlight > .barValue`).css({"align-self": "baseline", "text-align": "center"});
-      }
-      else if (chartOptions['barValuePosition'].toLowerCase() === 'centre'){
-        $(`${element} > .container-1 > .container-2 > .bar > .bar-highlight > .barValue`).css({"align-self": "center", "text-align": "center"});
-      }
-      else if (chartOptions['barValuePosition'].toLowerCase() === 'bottom'){
-        $(`${element} > .container-1 > .container-2 > .bar > .bar-highlight > .barValue`).css({"align-self": "end", "text-align": "center"});
-      }
-
-    }
-
-  }
-
-  function setOptions(options, element){
-
-    // If options has titleFontSize
-    if( options.hasOwnProperty('titleFontSize') ){
-
-      // Update the titleFontSize
-      $(`${element} > .chartTitle > h2`).css("font-size", options['titleFontSize'] );
-    }
-
-    // If options has titleFontColour
-    if( options.hasOwnProperty('titleFontColour') ){
-
-      // Update the titleFontSize
-      $(`${element} > .chartTitle > h2`).css("color", options['titleFontColour'] );
-    } else {
-
-      // Update the titleFontSize using the default chartOptions
-      $(`${element} > .chartTitle > h2`).css("color", chartOptions['titleFontColour'] );
     }
 
     // If options has barColour
@@ -452,32 +482,6 @@ function drawBarChart(data, options, element){
         }
       }
     }
-
-
-    // if options has labelColour set the label to that color
-    if( options.hasOwnProperty('labelColour') ){
-      $("label").css("color", options['labelColour'] );
-    }
-
-    // if options has barSpacing set the barSpacing to that gap
-    if( options.hasOwnProperty('barSpacing') ){
-      $(".container-2").css("gap", options['barSpacing'] );
-    }
-
-    // if options has barChartAxes update the chart layout
-    if( options.hasOwnProperty('barChartAxes') ){
-
-      // If the barChartAxes is vertical then produce Vertical Chart
-      if(options['barChartAxes'] === 'vertical'){
-
-      // Otherwise produce the Horizontal Chart
-      } else {
-
-
-      }
-    }
-
-
 
   }
 
