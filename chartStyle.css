@@ -76,7 +76,7 @@ html, body{
 }
 
 #horizontalIndex > .legendCategory {
-	margin: 2px auto 0px 3px;
+	margin: 5px;
 }
 
 #horizontalIndex > label {
