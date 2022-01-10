@@ -375,21 +375,22 @@ function drawBarChart(data, options, element){
 
   // Label Attributes ----------------
     // apply 'labelFontSize' attributes if set
-    if(options['stacked']){
 
-      if(options['verticalAxis']){
+  if(options['stacked']){
 
-        applyAxisCSS('labelFontSize', '.container-1 > .left > .legendCategory > label', 'font-size', '.container-1 > .left > .legendCategory > label', 'font-size');
+    applyAxisCSS('labelColours', '.container-1 > .left > .legendCategory > label', 'color', '#horizontalIndex > .legendCategory > label', 'color');
 
+    applyAxisCSS('labelFontSize', '.container-1 > .left > .legendCategory > label', 'font-size', '#horizontalIndex > .legendCategory > label', 'font-size');
 
-        $(`${element} > #verticalIndex`).css('margin-left', $(`${element} #sidebar`).css('width') )
-      } else {
-        applyAxisCSS('labelFontSize', '#horizontalIndex > .legendCategory > label', 'font-size', '#horizontalIndex > .legendCategory > label', 'font-size');
-      }
+    $(`${element} > #verticalIndex`).css('margin-left', $(`${element} #sidebar`).css('width') )
 
-    } else {
-      applyAxisCSS('labelFontSize', '.container-1 > .left > label', 'font-size', '.container-1 > .container-2 > .bar > label', 'font-size');
-    }
+  } else {
+
+    applyAxisCSS('labelColours', '.container-1 > .left > label', 'color', '.container-1 > .container-2 > .bar > label', 'color');
+
+    applyAxisCSS('labelFontSize', '.container-1 > .left > label', 'font-size', '.container-1 > .container-2 > .bar > label', 'font-size');
+
+  }
 
   // Title Attributes ----------------
 
