@@ -95,9 +95,10 @@ function drawBarChart(data, options, element){
     stacked: false,
     titleFontSize: '15px',
     titleFontColour: 'green',
-    barColour: ['grey','#ccc'],
+    barColour: [ 'blue', 'orange', 'red', 'gray', '#964b00', 'purple', 'green' ],
     labelColours: 'blue',
     labelName: 'Label',
+    labelFontSize: '10px',
     barSpacing: '0px',
     barValueFontSize: '15px',
     barValueWeight: "normal",
@@ -150,6 +151,8 @@ function drawBarChart(data, options, element){
     // if the highestIndex (highestNumber) is greater or equal to zero
     for(i = highestIndex; i >= 0 ; i--){
 
+      // theIndexs += `<label>${i}</label>`;
+
       if (i % 5 === 0 || i === highestIndex){
         theIndexs += `<label>${i}</label>`;
       }
@@ -159,8 +162,6 @@ function drawBarChart(data, options, element){
 
     // loop through the bar data entries
     for(i = 0; i < chart['amountOfBars']; i++){
-
-      let currentOrder = i;
 
       // if the colourIndex passes the length
       if ( colourIndex >= chartOptions['barColour'].length){
@@ -241,7 +242,7 @@ function drawBarChart(data, options, element){
 
           // format the bar for stackedBar
           theBars += `
-          <div class="bar" data-sort="${chart['stackedOrder'][i]}" style="${chart['barProperty']}:${((currentBarValue / highestNumber) * 100 )}%;">
+          <div class="bar" style="${chart['barProperty']}:${((currentBarValue / highestNumber) * 100 )}%;">
             <div class="bar-highlight" style="${barColour}; ${chart['barProperty']}:100%; ">
               <div class="barValue">${currentBarValue}</div>
             </div>
@@ -270,15 +271,15 @@ function drawBarChart(data, options, element){
         // if chartOptions['stacked'] === true
         if (chartOptions['stacked']){
 
-          // format the bar for stacked horizontal axis
+          // // // format the bar for stacked horizontal axis
           theBars += `
-          <div class="bar" data-sort="${chart['stackedOrder'][i]}" value="${currentBarValue}" style="${chart['barProperty']}:${((currentBarValue / highestNumber) * 100 )}%;">
-            <div class="bar-highlight" style="${chart['barProperty']}: 100%; ${barColour}">
+          <div class="bar" style="${chart['barProperty']}: 100%;">
+            <div class="bar-highlight" style="${chart['barProperty']}:${((currentBarValue / highestNumber) * 100 )}%; ${barColour}">
               <div class="barValue">${currentBarValue}</div>
             </div>
           </div>`;
 
-        // if chartOptions['verticalAxis'] === false && chartOptions['stacked'] === false
+          // if chartOptions['verticalAxis'] === false && chartOptions['stacked'] === false
         } else {
 
           // format the bar for Horizontal Axis
@@ -362,18 +363,33 @@ function drawBarChart(data, options, element){
 
     if(options['stacked']){
 
-      console.log(`Correct Index Order: ${chart['stackedOrder']}`)
       // Determine how to RE-ORDER based on stackedOrder Index
-      for(i = 0; i <= chart['stackedOrder'].length; i++){
-      //  $(`${element} .container-1 > .container-2 > .bar:nth-child(${chart['stackedOrder'][i]})`).css("order", `${i}` );
+      for(i = 0; i < chart['stackedOrder'].length; i++){
+
+        // Add the correct order decending to each bar
+        $(`${element} .container-1 > .container-2`).find(`.bar:nth(${chart['stackedOrder'][i]})`).css(`z-index`, `${i}`);
+
       }
 
     }
 
   // Label Attributes ----------------
     // apply 'labelFontSize' attributes if set
-    applyAxisCSS('labelFontSize', '.container-1 > .left > label', 'font-size', '.container-1 > .container-2 > .bar > label', 'font-size');
+    if(options['stacked']){
 
+      if(options['verticalAxis']){
+
+        applyAxisCSS('labelFontSize', '.container-1 > .left > .legendCategory > label', 'font-size', '.container-1 > .left > .legendCategory > label', 'font-size');
+
+
+        $(`${element} > #verticalIndex`).css('margin-left', $(`${element} #sidebar`).css('width') )
+      } else {
+        applyAxisCSS('labelFontSize', '#horizontalIndex > .legendCategory > label', 'font-size', '#horizontalIndex > .legendCategory > label', 'font-size');
+      }
+
+    } else {
+      applyAxisCSS('labelFontSize', '.container-1 > .left > label', 'font-size', '.container-1 > .container-2 > .bar > label', 'font-size');
+    }
 
   // Title Attributes ----------------
 
@@ -443,43 +459,33 @@ function drawBarChart(data, options, element){
     // Stacked Test Material (Will be revised)
     if(chartOptions['stacked']){
 
+      // if vertical & stacked
       if(chartOptions['verticalAxis']){
 
-        // Assign the "font-size" based on options['barValueFontSize']
-        $(`${element} > .container-1 > .container-2`).css('flex-direction','row');
-        $(`${element} > .container-1 > .container-2 > .bar`).css('height','50px');
+        // update the bar parent's css
+        $(`${element} > .container-1 > .container-2`).css('position','relative');
 
-        // copy the sidebar width for the margin-left
-        $(`${element} > #verticalIndex`).css('margin-left', `${$(`${element} > .container-1 > #sidebar`).width() + 5}px` );
-
-        // reset left-margin if window is resized
-        window.addEventListener('resize', function() {
-
-          // copy the sidebar width for the margin-left
-          $(`${element} > #verticalIndex`).css('margin-left', `${$(`${element} > .container-1 > #sidebar`).width() + 5}px` );
-
+        // Update the bar's CSS
+        $(`${element} > .container-1 > .container-2 > .bar`).css({
+          'position' : 'absolute',
+          'height' : '100%'
         });
+
+
+
 
       // if horizontal & stacked
       } else {
-        $(`${element} > .container-1 > .container-2`).css('flex-direction','column-reverse');
-        $(`${element} > .container-1 > .container-2`).css('justify-content','stretch');
-        $(`${element} > #horizontalIndex`).css('margin-left', `${$(`${element} > .container-1 > #sidebar`).width() + 10}px` );
 
-        // reset left-margin if window is resized
-        window.addEventListener('resize', function() {
+        // update the bar parent's css
+        $(`${element} > .container-1 > .container-2`).css('position','relative');
 
-          // copy the sidebar width for the margin-left
-          $(`${element} > #horizontalIndex`).css('margin-left', `${$(`${element} > .container-1 > #sidebar`).width() + 10}px` );
-
-          // copy the sidebar width for the margin-left
-          $(`${element} > #horizontalIndex`).css('width', `${$(`${element} > .container-1 > .container-2`).width()}px` );
-
+        // Update the bar's CSS
+        $(`${element} > .container-1 > .container-2 > .bar`).css({
+          'position' : 'absolute',
+          'width' : '100%'
         });
 
-
-        $(`${element} > .container-1 > .container-2 > .bar`).css('width','inherit');
-        $(`${element} > .container-1 > .container-2 > .bar > .bar-highlight`).css('width','100%');
       }
 
     }
