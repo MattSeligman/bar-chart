@@ -13,24 +13,51 @@ function drawBarChart(data, options, element){
     'stackedOrder': []
   }
 
-  // increment through the data bar's provided
-  for (let i = 0; i < data.length; i++){
+  // does the data's array contain another array? (multi chart)
+  if ( Array.isArray( data[0] ) ){
 
-    // if the data is an object (contains custom labels/categories)
-    if(typeof data[i] === 'object'){
+    console.log("an array")
 
-      // for each value in the current data[i]
-      for(var value in data[i]) {
+    // loop through all of the data entries
+    for(let arrayIndex = 0; arrayIndex < data.length; arrayIndex++){
 
-        // add the barValue value to the chart['barValues']
-        chart['barValues'].push( data[i][value] );
+      // add a sub array to chart['barValues'][arrayIndex]
+      chart['barValues'][arrayIndex] = []
+
+      // increment through each of the sub arrays in the data
+      for(let arrayValueIndex = 0; arrayValueIndex < data[arrayIndex].length; arrayValueIndex++){
+
+        // push the current chart['barValues'] to the current chart['barValues'][arrayIndex] sub array.
+        chart['barValues'][arrayIndex].push( Object.values( data[arrayIndex][arrayValueIndex] ) );
       }
+    }
 
-    // if the data isn't an object
-    } else {
+    console.log(chart['barValues'])
 
-      // add the barValue to the chart['barValues']
-      chart['barValues'].push( data[i] );
+  // the data's array doesn't contain another array (single chart)
+  } else {
+
+    console.log("not an array")
+
+    // increment through the data bar's provided
+    for (let i = 0; i < data.length; i++){
+
+      // if the data is an object (contains custom labels/categories)
+      if(typeof data[i] === 'object'){
+
+        // for each value in the current data[i]
+        for(var value in data[i]) {
+
+          // add the barValue value to the chart['barValues']
+          chart['barValues'].push( data[i][value] );
+        }
+
+      // if the data isn't an object
+      } else {
+
+        // add the barValue to the chart['barValues']
+        chart['barValues'].push( data[i] );
+      }
     }
   }
 
