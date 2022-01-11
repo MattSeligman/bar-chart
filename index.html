@@ -20,7 +20,9 @@
 
   <script>
     drawBarChart(
-      [ {'Monday':10}, {'Tuesday':20}, {'Wednesday':3.5}, {'Thursday':7}, {'Friday':5}, {'Saturday':6}, {'Sunday':15} ],
+      [
+          {'Monday':10}, {'Tuesday':20}, {'Wednesday':3.5}, {'Thursday':7}, {'Friday':5}, {'Saturday':6}, {'Sunday':15}
+      ],
       {
         verticalAxis: true,
         stacked: true,
@@ -38,7 +40,13 @@
     )
 
     drawBarChart(
-      [ {'Monday':10}, {'Tuesday':20}, {'Wednesday':3.5}, {'Thursday':7}, {'Friday':5}, {'Saturday':6}, {'Sunday':15} ],
+      // [
+      //     {'Monday':10}, {'Tuesday':20}, {'Wednesday':3.5}, {'Thursday':7}, {'Friday':5}, {'Saturday':6}, {'Sunday':15}
+      // ],
+      [
+        [ {'Monday':10}, {'Tuesday':20}, {'Wednesday':3.5}, {'Thursday':7}, {'Friday':5}, {'Saturday':6}, {'Sunday':15} ],
+        [ {'Monday':1}, {'Tuesday':2}, {'Wednesday':3}, {'Thursday':4}, {'Friday':5}, {'Saturday':6}, {'Sunday':7} ]
+      ],
       {
         verticalAxis: false,
         stacked: true,
