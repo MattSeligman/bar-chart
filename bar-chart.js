@@ -1,7 +1,7 @@
 function drawBarChart(data, options, element){
 
   // return the values passed from HTML page
-  console.log("== Start of " + element + " ==" + `\nType of Data: '${typeof data[0]}'`)
+  console.log("== Start of " + element + " ==" + `\nType of Data: '${typeof data[0]}'` + `\nChart Setup: verticalAxis: ${options['verticalAxis']} stacked: ${options['stacked']}`)
   console.log(data);
 
   // object to track attributes for chart
@@ -9,73 +9,161 @@ function drawBarChart(data, options, element){
     'highestValue':null,
     'lowestValue':null,
     'amountOfBars': data.length,
+    'amountOfArrays': null,
     'barValues': [],
-    'stackedOrder': []
+    'barLabels': [],
+    'stackedOrder': [],
+    'sortedOrder' : []
   }
 
-  // does the data's array contain another array? (multi chart)
+  // grab the arrays or objects data and return appropriately
+  function grabData( source ){
+
+    // source should always be an Array, and not an Object)
+    if( ( Array.isArray( source ) === true ) && ( jQuery.isPlainObject( source ) === false ) ){
+
+      // search through the inner Arrays
+      for(let innerArray in source){
+
+        // if the source is Object & Array equal false (Single Chart)
+        if ( !jQuery.isPlainObject( source[innerArray]) && !Array.isArray( source[innerArray] ) ){
+
+            // push and store the object's Values to the chart['barValues'] array.
+            chart['barValues'].push( source[innerArray] );
+
+            // set the amountOfArrays to 1
+            chart['amountOfArrays'] = 1;
+
+        // if the source's innerArray is an Object (Stacked Chart)
+        } else if ( jQuery.isPlainObject( source[innerArray] ) ){
+
+          if (source[innerArray].length > 1 ){
+
+            for(let innerSubArray in innerArray){
+
+              // push and store the object's Values to the chart['barValues'] array.
+              chart['barValues'].push( source[innerArray][innerSubArray] );
+
+              // set the amountOfArrays to 1
+              chart['amountOfArrays'] = source[innerArray].length;
+
+            }
+          }
+          console.log("Inner Source Object")
+
+          // set the amount of innerArrays (single)
+          chart['amountOfArrays'] = 1;
+
+          // set the amount of bars in the inner Array
+          chart['amountOfBars'] = source.length;
+
+          // push and store the object's Key's (labels) to the chart['barLabels'] array.
+          chart['barLabels'].push( Object.keys( source[innerArray] ) );
+
+          // push and store the object's Values to the chart['barValues'] array.
+          chart['barValues'].push( Object.values( source[innerArray] ) );
+
+        // if the source's innerArray is an Array
+        } else if (Array.isArray( source[innerArray] )){
+
+          console.log(`Inner Source Array`)
+
+          // loop through the innerArray's inner sub array's
+          for(let innerSubArray in source[innerArray]){
+
+            // set the amount of innerArrays
+            chart['amountOfArrays'] = source.length;
+
+            // set the amount of bars in the inner Array
+            chart['amountOfBars'] = source[innerArray].length;
+
+            // if the innerSubArray is an Array
+            if (!Array.isArray( source[innerArray][innerSubArray] )){
+
+              console.log("Contains only values")
+
+              // if the innerSubArray is an object
+              if (jQuery.isPlainObject( source[innerArray][innerSubArray]) ) {
+
+                // push and store the object's Values to the chart['barValues'] array.
+                chart['barValues'].push( Object.values( source[innerArray][innerSubArray] ) );
+
+              } else {
+
+                // push and store the object's Values to the chart['barValues'] array.
+                chart['barValues'].push( source[innerArray][innerSubArray] );
+
+              }
+
+            // if the innerSubArray is an Object
+            } else if ( jQuery.isPlainObject( source[innerArray][innerSubArray] ) ){
+
+              console.log("Contains label & values")
+
+              // push and store the object's Keys (labels) to the chart['barLabels'] array.
+              chart['barLabels'].push( Object.keys( source[innerArray][innerSubArray] ) );
+
+              // push and store the object's Values to the chart['barValues'] array.
+              chart['barValues'].push( Object.values( source[innerArray][innerSubArray] ) );
+
+            } //end if
+          } //end for
+        } // end else if
+      } // end for
+    } // end if
+
+    // grab the values from chart['barValues']
+    chart['sortedOrder'] = chart['barValues'];
+
+    // sort the values in decending order
+    chart['sortedOrder'] = chart['sortedOrder'].sort((a,b) => b-a );
+
+  }
+
+  // grab all the data
+  grabData( data );
+
+  // Test Logs
+  console.log(`Bar Labels: ${chart['barLabels']}`)
+  console.log(`Bar Values: ${chart['barValues']}`)
+  console.log(`Bar Values (Sorted): ${chart['sortedOrder']}`)
+  console.log(`Amount of Arrays: ${chart['amountOfArrays']}`)
+  console.log(`Amount of Bars: ${chart['amountOfBars']}`)
+
+  // create sortedOrder variable grabbing the chart['sortedOrder']
+  let sortedOrder = chart['sortedOrder'];
+
+  // test spliting labels and values into arrays
+  let labels = chart['barLabels'].toString().split(',');
+  let values = chart['barValues'].toString().split(',');
+
+  console.log(labels)
+  console.log(values)
+
+  console.log("============================================================================= ")
+
+  // Needs work **********
   if ( Array.isArray( data[0] ) ){
 
-    console.log("an array")
+    for(i = 0; i < data.length; i++){
 
-    // loop through all of the data entries
-    for(let arrayIndex = 0; arrayIndex < data.length; arrayIndex++){
+      for(let z = 0; z < data[0].length; z++){
 
-      // add a sub array to chart['barValues'][arrayIndex]
-      chart['barValues'][arrayIndex] = []
+        // INDEX NOT DETECTING PROPERLY (FIX)
+        chart['stackedOrder'].push( $( chart['barValues'][z] ).index( $( sortedOrder ).slice( i ) ) );
+        //       console.log(`Stacked Multi | z-Index: ${i} | Value: ${chart['barValues'][i][[z]]} :: Index: ${ $( chart['barValues'] ).index( chart['barValues'][i][z] ) } of data i ${i} z ${z}  - WORD: ${chart['barLabels'][i]}`);
 
-      // increment through each of the sub arrays in the data
-      for(let arrayValueIndex = 0; arrayValueIndex < data[arrayIndex].length; arrayValueIndex++){
-
-        // push the current chart['barValues'] to the current chart['barValues'][arrayIndex] sub array.
-        chart['barValues'][arrayIndex].push( Object.values( data[arrayIndex][arrayValueIndex] ) );
       }
     }
 
-    console.log(chart['barValues'])
-
-  // the data's array doesn't contain another array (single chart)
+  // Works****
   } else {
 
-    console.log("not an array")
+    for(i = 0; i < sortedOrder.length; i++){
+      chart['stackedOrder'].push( $( chart['barValues'] ).index( $( sortedOrder ).slice( i ) ) );
+      //     console.log(`Stacked Single | z-Index: ${i} | Chart Value: ${chart['barValues'][i]} :: Index: ${ $( chart['barValues'] ).index( $( data ).slice( i ) ) } of data`);
 
-    // increment through the data bar's provided
-    for (let i = 0; i < data.length; i++){
-
-      // if the data is an object (contains custom labels/categories)
-      if(typeof data[i] === 'object'){
-
-        // for each value in the current data[i]
-        for(var value in data[i]) {
-
-          // add the barValue value to the chart['barValues']
-          chart['barValues'].push( data[i][value] );
-        }
-
-      // if the data isn't an object
-      } else {
-
-        // add the barValue to the chart['barValues']
-        chart['barValues'].push( data[i] );
-      }
     }
-  }
-
-  // copy the barOrder from the generated chart['barValues']
-  let barOrder = chart['barValues'];
-
-  // create new sorted array by sorting in decending order
-  let sortedOrder = [...barOrder].sort((a,b) => b-a );
-
-  console.log(`Original Order: ${chart['barValues']}`)
-  console.log(`Sorted Order: ${sortedOrder}`);
-
-  // for(i = 0; i < sortedOrder.length; i++){
-  //   console.log(`Original: The number ${barOrder[i]} is placed in ${ $( barOrder ).index( $( sortedOrder ).slice( i ) ) } in the sortedOrder `);
-  // }
-
-  for(i = 0; i < sortedOrder.length; i++){
-    chart['stackedOrder'].push( $( barOrder ).index( $( sortedOrder ).slice( i ) ) );
   }
 
   function determineIndexRange(data){
@@ -227,19 +315,35 @@ function drawBarChart(data, options, element){
       if (typeof data[i] === 'object'){
 
         // assign the currentLabel
-        currentLabel = `<label>${Object.keys(data[i])[0]}</label>`;
+        currentLabel = `<label>${chart['barLabels'][i]}</label>`;
 
+        // switch theLabels layout if stacked
         if(chartOptions['stacked']){
-          theLabels += `<div class="legendCategory"><div class="legendColour" style="${barColour}"></div><label>${Object.keys(data[i])[0]}</label></div>`;
+
+          console.log( data[i] )
+
+
+          // horizontall layout {BUG LOCATED WITH MULTI CHART DATA}
+//          theLabels += `<div class="legendCategory"><div class="legendColour" style="${barColour}"></div><label>${Object.keys(data[i])[0]}</label></div>`;
+
+          theLabels += `<div class="legendCategory"><div class="legendColour" style="${barColour}"></div><label>${chart['barLabels'][i]}</label></div>`;
+
+          // assign the currentBarValue
+          currentBarValue = Object.values(data[i])[0];
 
         } else {
+
+          // vertical layout
           theLabels += `<label>${Object.keys(data[i])[0]}</label>`;
+
+          // assign the currentBarValue
+          currentBarValue = Object.values(data[i])[0];
+
         }
 
-        // assign the currentBarValue
-        currentBarValue = Object.values(data[i])[0];
 
-      } else {
+      // if this bar's data isn't an object
+    } else {
 
         // assign the currentLabel
         currentLabel = `<label>${chartOptions['labelName']} ${(i + 1)}</label>`;
@@ -298,7 +402,7 @@ function drawBarChart(data, options, element){
         // if chartOptions['stacked'] === true
         if (chartOptions['stacked']){
 
-          // // // format the bar for stacked horizontal axis
+          // format the bar for stacked horizontal axis (stacked: true | verticalAxis: false)
           theBars += `
           <div class="bar" style="${chart['barProperty']}: 100%;">
             <div class="bar-highlight" style="${chart['barProperty']}:${((currentBarValue / highestNumber) * 100 )}%; ${barColour}">
@@ -390,11 +494,28 @@ function drawBarChart(data, options, element){
 
     if(options['stacked']){
 
-      // Determine how to RE-ORDER based on stackedOrder Index
-      for(i = 0; i < chart['stackedOrder'].length; i++){
+      if ( Array.isArray( data[0] ) ){
 
-        // Add the correct order decending to each bar
-        $(`${element} .container-1 > .container-2`).find(`.bar:nth(${chart['stackedOrder'][i]})`).css(`z-index`, `${i}`);
+        for(let i = 0; i < data.length; i++){
+
+          for(let z = 0; z < data[0].length; z++){
+
+            $(`${element} .container-1 > .container-2`).find(`.bar:nth(${chart['stackedOrder'][i]})`).css(`z-index`, `${i}`);
+
+            // INDEX NOT DETECTING PROPERLY (FIX)
+            chart['stackedOrder'].push( $( chart['barValues'][z] ).index( $( sortedOrder ).slice( i ) ) );
+            console.log(`Stacked Multi | z-Index: ${i} | Value: ${chart['barValues'][i][[z]]} :: Index: ${ $( chart['barValues'] ).index( chart['barValues'][i][z] ) } of data i ${i} z ${z}`);
+
+          }
+        }
+
+      } else {
+
+        for(let i = 0; i < data.length; i++){
+
+          console.log("Horizontal")
+            $(`${element} .container-1 > .container-2`).find(`.bar:nth(${chart['stackedOrder'][i]})`).css(`z-index`, `${i}`);
+        }
 
       }
 
