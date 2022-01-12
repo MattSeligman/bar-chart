@@ -111,17 +111,13 @@ function drawBarChart(data, options, element){
         } // end else if
       } // end for
     } // end if
-
-    // grab the values from chart['barValues']
-    chart['sortedOrder'] = chart['barValues'];
-
-    // sort the values in decending order
-    chart['sortedOrder'] = chart['sortedOrder'].sort((a,b) => b-a );
-
   }
 
   // grab all the data
   grabData( data );
+
+  // set the chart['sortedOrder'] to the chart['barValues'] sorted in decending order
+  chart['sortedOrder'] = chart['barValues'].slice().sort((a,b) => b-a );
 
   // Test Logs
   console.log(`Bar Labels: ${chart['barLabels']}`)
@@ -276,151 +272,173 @@ function drawBarChart(data, options, element){
     let colourIndex = 0;
 
     // loop through the bar data entries
-    for(i = 0; i < chart['amountOfBars']; i++){
+    for(dataIndex = 0; dataIndex < chart['amountOfArrays']; dataIndex++){
 
-      // if the colourIndex passes the length
-      if ( colourIndex >= chartOptions['barColour'].length){
+      // loop through the bar data entries
+      for(i = 0; i < chart['amountOfBars']; i++){
 
-        // reset the colourIndex
-        colourIndex = 0;
-      }
+        // if the colourIndex passes the length
+        if ( colourIndex >= chartOptions['barColour'].length){
 
-      if ( options.hasOwnProperty('barColour') ){
-
-        if( options['barColour'].length === 1){
-          barColour = `background-color: ${options['barColour']}`;
+          // reset the colourIndex
+          colourIndex = 0;
         }
 
-        if( options['barColour'].length >= 2){
-          barColour = `background-color: ${options['barColour'][colourIndex]}`;
-          colourIndex ++;
-        }
+        if ( options.hasOwnProperty('barColour') ){
 
-      } else
+          if( options['barColour'].length === 1){
+            barColour = `background-color: ${options['barColour']}`;
+          }
 
-      if ( chartOptions.hasOwnProperty('barColour') ){
+          if( options['barColour'].length >= 2){
+            barColour = `background-color: ${options['barColour'][colourIndex]}`;
+            colourIndex ++;
+          }
 
-        if( chartOptions['barColour'].length === 1){
-          barColour = `background-color: ${chartOptions['barColour']}`;
-        }
+        } else
 
-        if( chartOptions['barColour'].length >= 2){
-          barColour = `background-color: ${chartOptions['barColour'][colourIndex]}`;
-          colourIndex ++;
-        }
+        if ( chartOptions.hasOwnProperty('barColour') ){
 
-      }
+          if( chartOptions['barColour'].length === 1){
+            barColour = `background-color: ${chartOptions['barColour']}`;
+          }
 
-      // if this bar's data is an object
-      if (typeof data[i] === 'object'){
-
-        // assign the currentLabel
-        currentLabel = `<label>${chart['barLabels'][i]}</label>`;
-
-        // switch theLabels layout if stacked
-        if(chartOptions['stacked']){
-
-          console.log( data[i] )
-
-
-          // horizontall layout {BUG LOCATED WITH MULTI CHART DATA}
-//          theLabels += `<div class="legendCategory"><div class="legendColour" style="${barColour}"></div><label>${Object.keys(data[i])[0]}</label></div>`;
-
-          theLabels += `<div class="legendCategory"><div class="legendColour" style="${barColour}"></div><label>${chart['barLabels'][i]}</label></div>`;
-
-          // assign the currentBarValue
-          currentBarValue = Object.values(data[i])[0];
-
-        } else {
-
-          // vertical layout
-          theLabels += `<label>${Object.keys(data[i])[0]}</label>`;
-
-          // assign the currentBarValue
-          currentBarValue = Object.values(data[i])[0];
+          if( chartOptions['barColour'].length >= 2){
+            barColour = `background-color: ${chartOptions['barColour'][colourIndex]}`;
+            colourIndex ++;
+          }
 
         }
 
+        // if this bar's data is an object
+        if (typeof data[i] === 'object'){
 
-      // if this bar's data isn't an object
-    } else {
+          console.log(`LENGTH: ${chart['barLabels'].length} `)
+          currentLabel = `<label>${chart['barLabels'][i]}</label>`;
 
-        // assign the currentLabel
-        currentLabel = `<label>${chartOptions['labelName']} ${(i + 1)}</label>`;
+          // switch theLabels layout if stacked
+          if(chartOptions['stacked']){
 
-        if(chartOptions['stacked']){
-          theLabels += `<div class="legendCategory"><div class="legendColour" style="${barColour}"></div><label>${chartOptions['labelName']} ${(i + 1)}</label></div>`;
+            console.log( data[i] )
 
-        } else {
-          theLabels += `<label>${chartOptions['labelName']} ${(i + 1)}</label>`;
-        }
+            if (Array.isArray( data[i] ) === true ){
+              console.log("BREAK IT DOWN FURTHER")
 
-        // assign the currentBarValue
-        currentBarValue = data[i];
-      }
+              for (let z = 0; z < data[i].length; z++){
+                chart['barLabels'].push(Object.keys(data[i][z]));
+              }
 
-      // if chartOptions['verticalAxis'] === true (Chart is Vertical)
-      if (chartOptions['verticalAxis']){
+            }
 
-        // set theLeftDisplay to labels
-        theLeftDisplay = `${theLabels}`;
+            chart['barLabels'] = chart['barLabels'].splice(0, chart['amountOfBars'])
 
-        // set theBottomDisplay to the current Index
-        theBottomDisplay = `${theIndexs}`;
+            // horizontall layout {BUG LOCATED WITH MULTI CHART DATA}
+  //          theLabels += `<div class="legendCategory"><div class="legendColour" style="${barColour}"></div><label>${Object.keys(data[i])[0]}</label></div>`;
 
-        // if chartOptions['verticalAxis'] === true && chartOptions['stacked'] === true
-        if (chartOptions['stacked']){
+            theLabels += `<div class="legendCategory"><div class="legendColour" style="${barColour}"></div><label>${chart['barLabels'][i]}</label></div>`;
 
-          // format the bar for stackedBar
-          theBars += `
-          <div class="bar" style="${chart['barProperty']}:${((currentBarValue / highestNumber) * 100 )}%;">
-            <div class="bar-highlight" style="${barColour}; ${chart['barProperty']}:100%; ">
-              <div class="barValue">${currentBarValue}</div>
-            </div>
-          </div>`;
+            // assign the currentBarValue
+            currentBarValue = Object.values(data[i])[0];
 
-        // if chartOptions['verticalAxis'] === true && chartOptions['stacked'] === false
-        } else {
+          } else {
 
-          theBars += `
-          <div class="bar">
-            <div class="bar-highlight" style="${chart['barProperty']}:${((currentBarValue / highestNumber) * 100 )}%; ${barColour}">
-              <div class="barValue">${currentBarValue}</div>
-            </div>
-          </div>`;
-        }
+            console.log(chart['barLabels'])
+            if ( chart['barLabels'] === null){
+              // vertical layout
+              console.log(`WHATS THIS: ${Object.keys(chart['barLabels'])}`)
+              theLabels += `<label>${chart['barLabels'][i]}</label>`;
+            } else {
+              // vertical layout
+              theLabels += `<label>${Object.keys(data[i])[0]}</label>`;
+            }
 
-      // if chartOptions['verticalAxis'] === false ( Chart is Horizontal)
+            // assign the currentBarValue
+            currentBarValue = Object.values(data[i])[0];
+
+          }
+
+
+        // if this bar's data isn't an object
       } else {
 
-        // set theLeftDisplay to Index
-        theLeftDisplay = `${theIndexs}`;
+          // assign the currentLabel
+          currentLabel = `<label>${chartOptions['labelName']} ${(i + 1)}</label>`;
 
-        // set theBottomDisplay to the current Label
-        theBottomDisplay = `${currentLabel}`;
+          if(chartOptions['stacked']){
+            theLabels += `<div class="legendCategory"><div class="legendColour" style="${barColour}"></div><label>${chartOptions['labelName']} ${(i + 1)}</label></div>`;
 
-        // if chartOptions['stacked'] === true
-        if (chartOptions['stacked']){
+          } else {
+            theLabels += `<label>${chartOptions['labelName']} ${(i + 1)}</label>`;
+          }
 
-          // format the bar for stacked horizontal axis (stacked: true | verticalAxis: false)
-          theBars += `
-          <div class="bar" style="${chart['barProperty']}: 100%;">
-            <div class="bar-highlight" style="${chart['barProperty']}:${((currentBarValue / highestNumber) * 100 )}%; ${barColour}">
-              <div class="barValue">${currentBarValue}</div>
-            </div>
-          </div>`;
+          // assign the currentBarValue
+          currentBarValue = data[i];
+        }
 
-          // if chartOptions['verticalAxis'] === false && chartOptions['stacked'] === false
+        // if chartOptions['verticalAxis'] === true (Chart is Vertical)
+        if (chartOptions['verticalAxis']){
+
+          // set theLeftDisplay to labels
+          theLeftDisplay = `${theLabels}`;
+
+          // set theBottomDisplay to the current Index
+          theBottomDisplay = `${theIndexs}`;
+
+          // if chartOptions['verticalAxis'] === true && chartOptions['stacked'] === true
+          if (chartOptions['stacked']){
+
+            // format the bar for stackedBar
+            theBars += `
+            <div class="bar" style="${chart['barProperty']}:${((currentBarValue / highestNumber) * 100 )}%;">
+              <div class="bar-highlight" style="${barColour}; ${chart['barProperty']}:100%; ">
+                <div class="barValue">${currentBarValue}</div>
+              </div>
+            </div>`;
+
+          // if chartOptions['verticalAxis'] === true && chartOptions['stacked'] === false
+          } else {
+
+            theBars += `
+            <div class="bar">
+              <div class="bar-highlight" style="${chart['barProperty']}:${((currentBarValue / highestNumber) * 100 )}%; ${barColour}">
+                <div class="barValue">${currentBarValue}</div>
+              </div>
+            </div>`;
+          }
+
+        // if chartOptions['verticalAxis'] === false ( Chart is Horizontal)
         } else {
 
-          // format the bar for Horizontal Axis
-          theBars += `
-          <div class="bar">
-            <div class="bar-highlight" style="${chart['barProperty']}:${((currentBarValue / highestNumber) * 100 )}%; ${barColour}">
-              <div class="barValue">${currentBarValue}</div>
-            </div>
-            ${theBottomDisplay}
-          </div>`;
+          // set theLeftDisplay to Index
+          theLeftDisplay = `${theIndexs}`;
+
+          // set theBottomDisplay to the current Label
+          theBottomDisplay = `${currentLabel}`;
+
+          // if chartOptions['stacked'] === true
+          if (chartOptions['stacked']){
+
+            // format the bar for stacked horizontal axis (stacked: true | verticalAxis: false)
+            theBars += `
+            <div class="bar" style="${chart['barProperty']}: 100%;">
+              <div class="bar-highlight" style="${chart['barProperty']}:${((currentBarValue / highestNumber) * 100 )}%; ${barColour}">
+                <div class="barValue">${currentBarValue}</div>
+              </div>
+            </div>`;
+
+            // if chartOptions['verticalAxis'] === false && chartOptions['stacked'] === false
+          } else {
+
+            // format the bar for Horizontal Axis
+            theBars += `
+            <div class="bar">
+              <div class="bar-highlight" style="${chart['barProperty']}:${((currentBarValue / highestNumber) * 100 )}%; ${barColour}">
+                <div class="barValue">${currentBarValue}</div>
+              </div>
+              ${theBottomDisplay}
+            </div>`;
+          }
+
         }
 
       }
