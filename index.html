@@ -11,17 +11,40 @@
   </head>
     <body>
 
-      <div style="display: flex; height: 100%; width: 100%">
+      <div style="display: flex; height: 100%; width: 100%; padding-bottom: 150px;">
         <div id="chart"></div>
         <div id="chart2"></div>
         <div id="chart3"></div>
         <div id="chart4"></div>
       </div>
 
+      <div style="display: flex; height: 100%; width: 100%; padding-bottom: 150px;">
+        <div id="chart5"></div>
+        <div id="chart6"></div>
+        <div id="chart7"></div>
+        <div id="chart8"></div>
+      </div>
+
+      <div style="display: flex; height: 100%; width: 100%; padding-bottom: 150px;">
+        <div id="chart9"></div>
+        <div id="chart10"></div>
+        <div id="chart11"></div>
+        <div id="chart12"></div>
+      </div>
+
+      <div style="display: flex; height: 100%; width: 100%; padding-bottom: 150px;">
+        <div id="chart13"></div>
+        <div id="chart14"></div>
+        <div id="chart15"></div>
+        <div id="chart16"></div>
+      </div>
+
+
   <script>
     drawBarChart(
       [
-          {'Monday':10}, {'Tuesday':20}, {'Wednesday':3.5}, {'Thursday':7}, {'Friday':5}, {'Saturday':6}, {'Sunday':15}
+        [ {'Monday':10}, {'Tuesday':20}, {'Wednesday':3.5}, {'Thursday':7}, {'Friday':5}, {'Saturday':6}, {'Sunday':15} ],
+        [ {'Monday':10}, {'Tuesday':20}, {'Wednesday':3.5}, {'Thursday':7}, {'Friday':5}, {'Saturday':6}, {'Sunday':15} ]
       ],
       {
         verticalAxis: true,
@@ -60,7 +83,11 @@
     )
 
     drawBarChart(
-      [ 10, 20, 3.5, 7, 5, 6, 15 ],
+      // [ 10, 20, 3.5, 7, 5, 6, 15 ],
+      [
+        [ 10, 20, 3.5, 7, 5, 6, 15 ],
+        [ 22, 1, 2, 3, 4, 6, 15 ]
+      ],
       {
         verticalAxis: true,
         stacked: false,
@@ -96,6 +123,158 @@
         titleFontSize: '15px',
         titleFontColour: 'orange'
       }, '#chart4'
+    )
+
+    drawBarChart(
+      [
+        [ 10, 20, 3.5, 7, 5, 6, 15 ],
+        [ 22, 1, 2, 3, 4, 6, 15 ]
+      ],
+      {
+        verticalAxis: true,
+        stacked: true,
+        width: '50%',
+        height: '100%',
+        barColour: [ 'blue', 'orange', 'red', 'gray', '#964b00', 'purple', 'green' ],
+        barValueColour: "white",
+        barValueWeight: "bold",
+        barValueFontSize: "20px",
+        labelFontSize: '12px',
+        labelColour: [ 'red', 'blue' ],
+        titleFontSize: '15px',
+        titleFontColour: 'orange'
+      }, '#chart5'
+    )
+
+    drawBarChart(
+      [
+        [ 10, 20, 3.5, 7, 5, 6, 15 ],
+        [ 22, 1, 2, 3, 4, 6, 15 ]
+      ],
+      {
+        verticalAxis: false,
+        stacked: true,
+        width: '50%',
+        height: '100%',
+        labelFontSize: '15px',
+        barValueFontSize: "15px",
+        titleFontSize: '15px',
+
+      }, '#chart6'
+    )
+
+    drawBarChart(
+      [
+        [ {'Monday':10}, {'Tuesday':20}, {'Wednesday':3.5}, {'Thursday':7}, {'Friday':5}, {'Saturday':6}, {'Sunday':15} ],
+        [ {'Monday':1}, {'Tuesday':2}, {'Wednesday':3}, {'Thursday':4}, {'Friday':5}, {'Saturday':6}, {'Sunday':7} ]
+      ],
+      {
+        verticalAxis: true,
+        stacked: false,
+        width: '50%',
+        height: '100%',
+        barColour: [ 'blue', 'orange', 'red', 'gray', '#964b00', 'purple', 'green' ],
+        barValueColour: "white",
+        barValueWeight: "bold",
+        barValueFontSize: "large",
+        labelFontSize: '15px',
+        labelColours: 'red',
+        titleFontSize: '15px',
+        titleFontColour: 'orange'
+        }, '#chart7'
+    )
+
+    drawBarChart(
+      [
+        [ {'Monday':10}, {'Tuesday':20}, {'Wednesday':3.5}, {'Thursday':7}, {'Friday':5}, {'Saturday':6}, {'Sunday':15} ],
+        [ {'Monday':1}, {'Tuesday':2}, {'Wednesday':3}, {'Thursday':4}, {'Friday':5}, {'Saturday':6}, {'Sunday':7} ]
+      ],
+      {
+        verticalAxis: false,
+        stacked: false,
+        width: '50%',
+        height: '100%',
+        barColour: [ 'blue', 'orange', 'red', 'gray', '#964b00', 'purple', 'green','cyan' ],
+        barValueColour: "white",
+        barValueWeight: "bold",
+        barValueFontSize: "15px",
+        labelFontSize: '10px',
+        labelColours: 'green',
+        titleFontSize: '15px',
+        titleFontColour: 'orange'
+      }, '#chart8'
+    )
+
+    drawBarChart(
+      [
+          {'Monday':10}, {'Tuesday':20}, {'Wednesday':3.5}, {'Thursday':7}, {'Friday':5}, {'Saturday':6}, {'Sunday':15}
+      ],
+      {
+        verticalAxis: true,
+        stacked: true,
+        width: '50%',
+        height: '100%',
+        barColour: [ 'blue', 'orange', 'red', 'gray', '#964b00', 'purple', 'green' ],
+        barValueColour: "white",
+        barValueWeight: "bold",
+        barValueFontSize: "20px",
+        labelFontSize: '12px',
+        labelColour: [ 'red', 'blue' ],
+        titleFontSize: '15px',
+        titleFontColour: 'orange'
+      }, '#chart9'
+    )
+
+    drawBarChart(
+      [
+          {'Monday':10}, {'Tuesday':20}, {'Wednesday':3.5}, {'Thursday':7}, {'Friday':5}, {'Saturday':6}, {'Sunday':15}
+      ],
+      {
+        verticalAxis: false,
+        stacked: true,
+        width: '50%',
+        height: '100%',
+        labelFontSize: '15px',
+        barValueFontSize: "15px",
+        titleFontSize: '15px',
+
+      }, '#chart10'
+    )
+
+    drawBarChart(
+      [ 10, 20, 3.5, 7, 5, 6, 15 ],
+      {
+        verticalAxis: true,
+        stacked: false,
+        width: '50%',
+        height: '100%',
+        barColour: [ 'blue', 'orange', 'red', 'gray', '#964b00', 'purple', 'green' ],
+        barValueColour: "white",
+        barValueWeight: "bold",
+        barValueFontSize: "large",
+        labelFontSize: '15px',
+        labelColours: 'red',
+        titleFontSize: '15px',
+        titleFontColour: 'orange'
+        }, '#chart11'
+    )
+
+    drawBarChart(
+      [ 10, 20, 3.5, 7, 5, 6, 15 ],
+      {
+        verticalAxis: false,
+        stacked: false,
+        width: '50%',
+        height: '100%',
+        barColour: [ 'blue', 'orange', 'red', 'gray', '#964b00', 'purple', 'green','cyan' ],
+        barValueColour: "white",
+        barValueWeight: "bold",
+        barValueFontSize: "15px",
+        labelFontSize: '10px',
+        labelColours: 'green',
+        titleFontSize: '15px',
+        titleFontColour: 'orange'
+      }, '#chart12'
     )
 
   </script>
