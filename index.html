@@ -32,20 +32,9 @@
         <div id="chart12"></div>
       </div>
 
-      <div style="display: flex; height: 100%; width: 100%; padding-bottom: 150px;">
-        <div id="chart13"></div>
-        <div id="chart14"></div>
-        <div id="chart15"></div>
-        <div id="chart16"></div>
-      </div>
-
-
   <script>
     drawBarChart(
-      [
-        [ {'Monday':10}, {'Tuesday':20}, {'Wednesday':3.5}, {'Thursday':7}, {'Friday':5}, {'Saturday':6}, {'Sunday':15} ],
-        [ {'Monday':10}, {'Tuesday':20}, {'Wednesday':3.5}, {'Thursday':7}, {'Friday':5}, {'Saturday':6}, {'Sunday':15} ]
-      ],
+      [ {'Monday':10}, {'Tuesday':20}, {'Wednesday':3.5}, {'Thursday':7}, {'Friday':5}, {'Saturday':6}, {'Sunday':15} ],
       {
         verticalAxis: true,
         stacked: true,
@@ -56,26 +45,21 @@
         barValueWeight: "bold",
         barValueFontSize: "20px",
         labelFontSize: '12px',
-        labelColour: [ 'red', 'blue' ],
+        labelColour: [ 'red', 'blue', 'green' ],
         titleFontSize: '15px',
         titleFontColour: 'orange'
       }, '#chart'
     )
 
     drawBarChart(
-      // [
-      //     {'Monday':10}, {'Tuesday':20}, {'Wednesday':3.5}, {'Thursday':7}, {'Friday':5}, {'Saturday':6}, {'Sunday':15}
-      // ],
-      [
-        [ {'Monday':10}, {'Tuesday':20}, {'Wednesday':3.5}, {'Thursday':7}, {'Friday':5}, {'Saturday':6}, {'Sunday':15} ],
-        [ {'Monday':1}, {'Tuesday':2}, {'Wednesday':3}, {'Thursday':4}, {'Friday':5}, {'Saturday':6}, {'Sunday':7} ]
-      ],
+      [ {'Monday':10}, {'Tuesday':20}, {'Wednesday':3.5}, {'Thursday':7}, {'Friday':5}, {'Saturday':6}, {'Sunday':15} ],
       {
         verticalAxis: false,
         stacked: true,
         width: '50%',
         height: '100%',
         labelFontSize: '15px',
+        labelColour: [ 'red', 'blue', 'green' ],
         barValueFontSize: "15px",
         titleFontSize: '15px',
 
@@ -83,11 +67,7 @@
     )
 
     drawBarChart(
-      // [ 10, 20, 3.5, 7, 5, 6, 15 ],
-      [
-        [ 10, 20, 3.5, 7, 5, 6, 15 ],
-        [ 22, 1, 2, 3, 4, 6, 15 ]
-      ],
+      [ {'Monday':10}, {'Tuesday':20}, {'Wednesday':3.5}, {'Thursday':7}, {'Friday':5}, {'Saturday':6}, {'Sunday':15} ],
       {
         verticalAxis: true,
         stacked: false,
@@ -98,17 +78,14 @@
         barValueWeight: "bold",
         barValueFontSize: "large",
         labelFontSize: '15px',
-        labelColours: 'red',
+        labelColour: [ 'red', 'blue', 'green' ],
         titleFontSize: '15px',
         titleFontColour: 'orange'
         }, '#chart3'
     )
 
     drawBarChart(
-      [
-        [ 10, 20, 3.5, 7, 5, 6, 15 ],
-        [ 22, 1, 2, 3, 4, 6, 15 ]
-      ],
+      [ {'Monday':10}, {'Tuesday':20}, {'Wednesday':3.5}, {'Thursday':7}, {'Friday':5}, {'Saturday':6}, {'Sunday':15} ],
       {
         verticalAxis: false,
         stacked: false,
@@ -119,18 +96,16 @@
         barValueWeight: "bold",
         barValueFontSize: "15px",
         labelFontSize: '10px',
-        labelColours: 'green',
+        labelColour: [ 'red', 'blue', 'green' ],
         titleFontSize: '15px',
         titleFontColour: 'orange'
       }, '#chart4'
     )
 
     drawBarChart(
-      [
-        [ 10, 20, 3.5, 7, 5, 6, 15 ],
-        [ 22, 1, 2, 3, 4, 6, 15 ]
-      ],
+      [ 10, 20, 3.5, 7, 5, 6, 15 ],
       {
+        chartName: 'Chart #6',
         verticalAxis: true,
         stacked: true,
         width: '50%',
@@ -140,23 +115,22 @@
         barValueWeight: "bold",
         barValueFontSize: "20px",
         labelFontSize: '12px',
-        labelColour: [ 'red', 'blue' ],
+        labelColour: [ 'red', 'blue', 'green' ],
         titleFontSize: '15px',
         titleFontColour: 'orange'
       }, '#chart5'
     )
 
     drawBarChart(
-      [
-        [ 10, 20, 3.5, 7, 5, 6, 15 ],
-        [ 22, 1, 2, 3, 4, 6, 15 ]
-      ],
+      [ 10, 20, 3.5, 7, 5, 6, 15 ],
       {
         verticalAxis: false,
         stacked: true,
         width: '50%',
         height: '100%',
-        labelFontSize: '15px',
+        incrementBy: '5',
+        labelColour: [ 'red', 'blue', 'green' ],
+        labelFontSize: '13px',
         barValueFontSize: "15px",
         titleFontSize: '15px',
 
@@ -164,10 +138,7 @@
     )
 
     drawBarChart(
-      [
-        [ {'Monday':10}, {'Tuesday':20}, {'Wednesday':3.5}, {'Thursday':7}, {'Friday':5}, {'Saturday':6}, {'Sunday':15} ],
-        [ {'Monday':1}, {'Tuesday':2}, {'Wednesday':3}, {'Thursday':4}, {'Friday':5}, {'Saturday':6}, {'Sunday':7} ]
-      ],
+      [ 10, 20, 3.5, 7, 5, 6, 15 ],
       {
         verticalAxis: true,
         stacked: false,
@@ -178,17 +149,14 @@
         barValueWeight: "bold",
         barValueFontSize: "large",
         labelFontSize: '15px',
-        labelColours: 'red',
+        labelColour: [ 'red', 'blue', 'green' ],
         titleFontSize: '15px',
         titleFontColour: 'orange'
         }, '#chart7'
     )
 
     drawBarChart(
-      [
-        [ {'Monday':10}, {'Tuesday':20}, {'Wednesday':3.5}, {'Thursday':7}, {'Friday':5}, {'Saturday':6}, {'Sunday':15} ],
-        [ {'Monday':1}, {'Tuesday':2}, {'Wednesday':3}, {'Thursday':4}, {'Friday':5}, {'Saturday':6}, {'Sunday':7} ]
-      ],
+      [ 10, 20, 3.5, 7, 5, 6, 15 ],
       {
         verticalAxis: false,
         stacked: false,
@@ -199,7 +167,7 @@
         barValueWeight: "bold",
         barValueFontSize: "15px",
         labelFontSize: '10px',
-        labelColours: 'green',
+        labelColour: [ 'red', 'blue', 'green' ],
         titleFontSize: '15px',
         titleFontColour: 'orange'
       }, '#chart8'
@@ -207,7 +175,7 @@
 
     drawBarChart(
       [
-          {'Monday':10}, {'Tuesday':20}, {'Wednesday':3.5}, {'Thursday':7}, {'Friday':5}, {'Saturday':6}, {'Sunday':15}
+        {'Monday':10}, {'Tuesday':20}, {'Wednesday':3.5}, {'Thursday':7}, {'Friday':5}, {'Saturday':6}, {'Sunday':15}
       ],
       {
         verticalAxis: true,
@@ -219,7 +187,7 @@
         barValueWeight: "bold",
         barValueFontSize: "20px",
         labelFontSize: '12px',
-        labelColour: [ 'red', 'blue' ],
+        labelColour: [ 'red', 'blue', 'green' ],
         titleFontSize: '15px',
         titleFontColour: 'orange'
       }, '#chart9'
@@ -227,13 +195,14 @@
 
     drawBarChart(
       [
-          {'Monday':10}, {'Tuesday':20}, {'Wednesday':3.5}, {'Thursday':7}, {'Friday':5}, {'Saturday':6}, {'Sunday':15}
+        {'Monday':10}, {'Tuesday':20}, {'Wednesday':3.5}, {'Thursday':7}, {'Friday':5}, {'Saturday':6}, {'Sunday':15}
       ],
       {
         verticalAxis: false,
         stacked: true,
         width: '50%',
         height: '100%',
+        labelColour: [ 'red', 'blue', 'green' ],
         labelFontSize: '15px',
         barValueFontSize: "15px",
         titleFontSize: '15px',
@@ -242,8 +211,9 @@
     )
 
     drawBarChart(
-      [ 10, 20, 3.5, 7, 5, 6, 15 ],
-      {
+      [
+        {'Monday':10}, {'Tuesday':20}, {'Wednesday':3.5}, {'Thursday':7}, {'Friday':5}, {'Saturday':6}, {'Sunday':15}
+      ],{
         verticalAxis: true,
         stacked: false,
         width: '50%',
@@ -253,15 +223,16 @@
         barValueWeight: "bold",
         barValueFontSize: "large",
         labelFontSize: '15px',
-        labelColours: 'red',
+        labelColour: [ 'red', 'blue', 'green' ],
         titleFontSize: '15px',
         titleFontColour: 'orange'
         }, '#chart11'
     )
 
     drawBarChart(
-      [ 10, 20, 3.5, 7, 5, 6, 15 ],
-      {
+      [
+        {'Monday':10}, {'Tuesday':20}, {'Wednesday':3.5}, {'Thursday':7}, {'Friday':5}, {'Saturday':6}, {'Sunday':15}
+      ],{
         verticalAxis: false,
         stacked: false,
         width: '50%',
@@ -271,7 +242,7 @@
         barValueWeight: "bold",
         barValueFontSize: "15px",
         labelFontSize: '10px',
-        labelColours: 'green',
+        labelColour: [ 'red', 'blue', 'green' ],
         titleFontSize: '15px',
         titleFontColour: 'orange'
       }, '#chart12'
