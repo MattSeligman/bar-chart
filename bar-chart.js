@@ -6,6 +6,7 @@ function drawBarChart(data, options, element){
 
   // object to track attributes for chart
   let chart = {
+    'chartName':null,
     'highestValue':null,
     'lowestValue':null,
     'amountOfBars': data.length,
@@ -138,27 +139,16 @@ function drawBarChart(data, options, element){
 
   console.log("============================================================================= ")
 
-  // Needs work **********
   if ( Array.isArray( data[0] ) ){
-
     for(i = 0; i < data.length; i++){
-
       for(let z = 0; z < data[0].length; z++){
-
-        // INDEX NOT DETECTING PROPERLY (FIX)
         chart['stackedOrder'].push( $( chart['barValues'][z] ).index( $( sortedOrder ).slice( i ) ) );
-        //       console.log(`Stacked Multi | z-Index: ${i} | Value: ${chart['barValues'][i][[z]]} :: Index: ${ $( chart['barValues'] ).index( chart['barValues'][i][z] ) } of data i ${i} z ${z}  - WORD: ${chart['barLabels'][i]}`);
-
       }
     }
 
-  // Works****
   } else {
-
     for(i = 0; i < sortedOrder.length; i++){
       chart['stackedOrder'].push( $( chart['barValues'] ).index( $( sortedOrder ).slice( i ) ) );
-      //     console.log(`Stacked Single | z-Index: ${i} | Chart Value: ${chart['barValues'][i]} :: Index: ${ $( chart['barValues'] ).index( $( data ).slice( i ) ) } of data`);
-
     }
   }
 
@@ -204,10 +194,11 @@ function drawBarChart(data, options, element){
     width: '98%',
     verticalAxis: false,
     stacked: false,
+    incrementBy: null,
     titleFontSize: '15px',
     titleFontColour: 'green',
     barColour: [ 'blue', 'orange', 'red', 'gray', '#964b00', 'purple', 'green' ],
-    labelColours: 'blue',
+    labelColour: 'blue',
     labelName: 'Label',
     labelFontSize: '10px',
     barSpacing: '0px',
@@ -262,11 +253,19 @@ function drawBarChart(data, options, element){
     // if the highestIndex (highestNumber) is greater or equal to zero
     for(i = highestIndex; i >= 0 ; i--){
 
-      // theIndexs += `<label>${i}</label>`;
+      let inc = 5;
 
-      if (i % 5 === 0 || i === highestIndex){
+      if (highestIndex >= 100) {
+        inc = 10;
+      }
+
+      if ( options.hasOwnProperty('incrementBy') ){
+        inc = options['incrementBy'];
+      }
+      if (i % inc === 0 || i === highestIndex){
         theIndexs += `<label>${i}</label>`;
       }
+
     }
 
     let colourIndex = 0;
@@ -445,9 +444,15 @@ function drawBarChart(data, options, element){
 
     }
 
+    let chartName = element;
+
+    if(options.hasOwnProperty("chartName")){
+      chartName = options['chartName'];
+    }
+
     let barChart = `
     <div class="chartTitle">
-      <h2>${element} - Stacked: ${chartOptions['stacked']} Vertical: ${chartOptions['verticalAxis']}</h2>
+      <h2>${chartName}</h2>
     </div>
 
     <div class="container-1">
@@ -540,19 +545,54 @@ function drawBarChart(data, options, element){
     }
 
   // Label Attributes ----------------
-    // apply 'labelFontSize' attributes if set
 
   if(options['stacked']){
 
-    applyAxisCSS('labelColours', '.container-1 > .left > .legendCategory > label', 'color', '#horizontalIndex > .legendCategory > label', 'color');
+    if (options.hasOwnProperty('labelColour')){
+
+      for(let i = 0; i < chart['amountOfBars']; i++){
+
+        // if the chart is Vertical apply vertical CSS
+        if (chartOptions['verticalAxis']){
+
+          // Locate the vertical axis labels and re-style them based on their index. Set the Colour based on the index divisible by the options label Colour Length to loop.
+          $(`${element} .container-1 > .left`).find(`label:nth(${i})`).css(`color`, `${options['labelColour'][i % options.labelColour.length] }`);
+
+        // if the chart is horizontal apply horizontal CSS
+        } else {
+
+          // Locate the horizontal axis labels and re-style them based on their index. Set the Colour based on the index divisible by the options label Colour Length to loop.
+          $(`${element} #horizontalIndex`).find(`.legendCategory:nth(${i}) > label`).css(`color`, `${options['labelColour'][i % options.labelColour.length] }`);
+        }
+      }
+    }
 
     applyAxisCSS('labelFontSize', '.container-1 > .left > .legendCategory > label', 'font-size', '#horizontalIndex > .legendCategory > label', 'font-size');
+
+    $(`${element} > #horizontalIndex`).css('margin-left', $(`${element} #sidebar`).css('width') )
 
     $(`${element} > #verticalIndex`).css('margin-left', $(`${element} #sidebar`).css('width') )
 
   } else {
 
-    applyAxisCSS('labelColours', '.container-1 > .left > label', 'color', '.container-1 > .container-2 > .bar > label', 'color');
+    if (options.hasOwnProperty('labelColour')){
+
+      for(let i = 0; i < chart['amountOfBars']; i++){
+
+        // if the chart is Vertical apply vertical CSS
+        if (chartOptions['verticalAxis']){
+
+          // Locate the vertical axis labels and re-style them based on their index. Set the Colour based on the index divisible by the options label Colour Length to loop.
+          $(`${element} .container-1 > .left`).find(`label:nth(${i})`).css(`color`, `${options['labelColour'][i % options.labelColour.length] }`);
+
+        // if the chart is horizontal apply horizontal CSS
+        } else {
+
+          // Locate the horizontal axis labels and re-style them based on their index. Set the Colour based on the index divisible by the options label Colour Length to loop.
+          $(`${element} .container-1 > .container-2`).find(`.bar > label:nth(${i})`).css(`color`, `${options['labelColour'][i % options.labelColour.length] }`);
+        }
+      }
+    }
 
     applyAxisCSS('labelFontSize', '.container-1 > .left > label', 'font-size', '.container-1 > .container-2 > .bar > label', 'font-size');
 
@@ -637,9 +677,6 @@ function drawBarChart(data, options, element){
           'position' : 'absolute',
           'height' : '100%'
         });
-
-
-
 
       // if horizontal & stacked
       } else {
