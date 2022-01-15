@@ -111,10 +111,6 @@ function drawBarChart(data, options, element){
   // create sortedOrder variable grabbing the chart['sortedOrder']
   let sortedOrder = chart['sortedOrder'];
 
-  // test spliting labels and values into arrays
-  let labels = chart['barLabels'].toString().split(',');
-  let values = chart['barValues'].toString().split(',');
-
   if ( Array.isArray( data[0] ) ){
     for(i = 0; i < data.length; i++){
       for(let z = 0; z < data[0].length; z++){
@@ -495,7 +491,6 @@ function drawBarChart(data, options, element){
 
             $(`${element} .container-1 > .container-2`).find(`.bar:nth(${chart['stackedOrder'][i]})`).css(`z-index`, `${i}`);
 
-            // INDEX NOT DETECTING PROPERLY (FIX)
             chart['stackedOrder'].push( $( chart['barValues'][z] ).index( $( sortedOrder ).slice( i ) ) );
 
           }
@@ -511,8 +506,6 @@ function drawBarChart(data, options, element){
       }
 
     }
-
-  // Label Attributes ----------------
 
   if(options['stacked']){
 
@@ -597,7 +590,6 @@ function drawBarChart(data, options, element){
       $(`${element} > #verticalIndex`).css('margin-left', `${$(`${element} .container-1 > .left > label`).outerWidth() }px` );
       $(`${element} > .container-1 > .left`).css("align-content", 'space-around' );
 
-
       $(`${element} > .container-1 > .container-2`).css("background-size", `calc( (1 / ${gridIncrement}) * 100% ) calc( (1 / ${chart['amountOfBars']} ) * 100% )` );
 
       if (chartOptions['barValuePosition'].toLowerCase() === 'top'){
@@ -628,8 +620,6 @@ function drawBarChart(data, options, element){
 
     }
 
-
-
     // Stacked Test Material (Will be revised)
     if(chartOptions['stacked']){
 
@@ -656,9 +646,7 @@ function drawBarChart(data, options, element){
           'position' : 'absolute',
           'width' : '100%'
         });
-
       }
-
     }
 
     // If options has barColour
@@ -692,50 +680,3 @@ function drawBarChart(data, options, element){
   setOptions(options, element);
 
 }
-
-/*
-"data"
-The data parameter will be the data the chart
-should work from Start with just an Array of numbers
-e.g. [1, 2, 3, 4, 5]
-
-"options"
-The options parameter should be an object
-which has options for the chart.
-
-width of the bar chart
-height of the bar chart
-
-"element"
-The element parameter should be a DOM element
-or jQuery element that the chart will get rendered into.
-
-Display a list of single values, horizontally as a bar chart
-
-    Numerical values should also be displayed inside of the bar
-    The position of values should be customizable too:
-        Top, centre or bottom of the bar.
-
-
-Bar properties that should be customizable:
-
-    Bar Colour
-    Label Colour
-    Bar spacing (space between bars)
-    Bar Chart axes
-
-X-axis should show labels for each data value
-
-    Think about how you would need to structure your data to associate a label to each value
-
-Y-axis should show ticks at certain values
-
-    Think about where you would configure these values. Should they be part of the data or the options to the bar chart function.
-
-The title of the bar chart should be able to be set and shown dynamically
-
-The title of the bar chart should also be customizable:
-
-    Font Size
-    Font Colour
-*/
