@@ -1,9 +1,5 @@
 function drawBarChart(data, options, element){
 
-  // return the values passed from HTML page
-  console.log("== Start of " + element + " ==" + `\nType of Data: '${typeof data[0]}'` + `\nChart Setup: verticalAxis: ${options['verticalAxis']} stacked: ${options['stacked']}`)
-  console.log(data);
-
   // object to track attributes for chart
   let chart = {
     'chartName':null,
@@ -50,8 +46,6 @@ function drawBarChart(data, options, element){
 
             }
           }
-          console.log("Inner Source Object")
-
           // set the amount of innerArrays (single)
           chart['amountOfArrays'] = 1;
 
@@ -67,8 +61,6 @@ function drawBarChart(data, options, element){
         // if the source's innerArray is an Array
         } else if (Array.isArray( source[innerArray] )){
 
-          console.log(`Inner Source Array`)
-
           // loop through the innerArray's inner sub array's
           for(let innerSubArray in source[innerArray]){
 
@@ -80,8 +72,6 @@ function drawBarChart(data, options, element){
 
             // if the innerSubArray is an Array
             if (!Array.isArray( source[innerArray][innerSubArray] )){
-
-              console.log("Contains only values")
 
               // if the innerSubArray is an object
               if (jQuery.isPlainObject( source[innerArray][innerSubArray]) ) {
@@ -98,8 +88,6 @@ function drawBarChart(data, options, element){
 
             // if the innerSubArray is an Object
             } else if ( jQuery.isPlainObject( source[innerArray][innerSubArray] ) ){
-
-              console.log("Contains label & values")
 
               // push and store the object's Keys (labels) to the chart['barLabels'] array.
               chart['barLabels'].push( Object.keys( source[innerArray][innerSubArray] ) );
@@ -120,24 +108,12 @@ function drawBarChart(data, options, element){
   // set the chart['sortedOrder'] to the chart['barValues'] sorted in decending order
   chart['sortedOrder'] = chart['barValues'].slice().sort((a,b) => b-a );
 
-  // Test Logs
-  console.log(`Bar Labels: ${chart['barLabels']}`)
-  console.log(`Bar Values: ${chart['barValues']}`)
-  console.log(`Bar Values (Sorted): ${chart['sortedOrder']}`)
-  console.log(`Amount of Arrays: ${chart['amountOfArrays']}`)
-  console.log(`Amount of Bars: ${chart['amountOfBars']}`)
-
   // create sortedOrder variable grabbing the chart['sortedOrder']
   let sortedOrder = chart['sortedOrder'];
 
   // test spliting labels and values into arrays
   let labels = chart['barLabels'].toString().split(',');
   let values = chart['barValues'].toString().split(',');
-
-  console.log(labels)
-  console.log(values)
-
-  console.log("============================================================================= ")
 
   if ( Array.isArray( data[0] ) ){
     for(i = 0; i < data.length; i++){
@@ -312,16 +288,12 @@ function drawBarChart(data, options, element){
         // if this bar's data is an object
         if (typeof data[i] === 'object'){
 
-          console.log(`LENGTH: ${chart['barLabels'].length} `)
           currentLabel = `<label>${chart['barLabels'][i]}</label>`;
 
           // switch theLabels layout if stacked
           if(chartOptions['stacked']){
 
-            console.log( data[i] )
-
             if (Array.isArray( data[i] ) === true ){
-              console.log("BREAK IT DOWN FURTHER")
 
               for (let z = 0; z < data[i].length; z++){
                 chart['barLabels'].push(Object.keys(data[i][z]));
@@ -331,9 +303,6 @@ function drawBarChart(data, options, element){
 
             chart['barLabels'] = chart['barLabels'].splice(0, chart['amountOfBars'])
 
-            // horizontall layout {BUG LOCATED WITH MULTI CHART DATA}
-  //          theLabels += `<div class="legendCategory"><div class="legendColour" style="${barColour}"></div><label>${Object.keys(data[i])[0]}</label></div>`;
-
             theLabels += `<div class="legendCategory"><div class="legendColour" style="${barColour}"></div><label>${chart['barLabels'][i]}</label></div>`;
 
             // assign the currentBarValue
@@ -341,12 +310,13 @@ function drawBarChart(data, options, element){
 
           } else {
 
-            console.log(chart['barLabels'])
             if ( chart['barLabels'] === null){
+
               // vertical layout
-              console.log(`WHATS THIS: ${Object.keys(chart['barLabels'])}`)
               theLabels += `<label>${chart['barLabels'][i]}</label>`;
+
             } else {
+
               // vertical layout
               theLabels += `<label>${Object.keys(data[i])[0]}</label>`;
             }
@@ -527,7 +497,6 @@ function drawBarChart(data, options, element){
 
             // INDEX NOT DETECTING PROPERLY (FIX)
             chart['stackedOrder'].push( $( chart['barValues'][z] ).index( $( sortedOrder ).slice( i ) ) );
-            console.log(`Stacked Multi | z-Index: ${i} | Value: ${chart['barValues'][i][[z]]} :: Index: ${ $( chart['barValues'] ).index( chart['barValues'][i][z] ) } of data i ${i} z ${z}`);
 
           }
         }
@@ -536,7 +505,6 @@ function drawBarChart(data, options, element){
 
         for(let i = 0; i < data.length; i++){
 
-          console.log("Horizontal")
             $(`${element} .container-1 > .container-2`).find(`.bar:nth(${chart['stackedOrder'][i]})`).css(`z-index`, `${i}`);
         }
 
