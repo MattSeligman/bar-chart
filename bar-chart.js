@@ -588,8 +588,7 @@ function drawBarChart(data, options, element){
     // apply 'barValueWeight' attributes if set
     applyAxisCSS('barValueWeight', '.container-1 > .container-2 > .bar > .bar-highlight > .barValue', 'font-weight', '.container-1 > .container-2 > .bar > .bar-highlight > .barValue', 'font-weight');
 
-
-        let gridIncrement = chart['highestValue'];
+    let gridIncrement = chart['highestValue'];
     $(`${element} > .container-1 > .left`).css("align-content", 'space-between' );
 
     // apply default vertical CSS
