@@ -1,4 +1,3 @@
-
 # Bar Chart
 
 Use a Bar Chart to show off your latest data. Customize each chart by choosing the options that work best for you.
@@ -70,7 +69,7 @@ Note: Add a comma unless it's the last option
 | height        | `height: '100%',`| Adjust the height of the chart   | A `String` containing a `value` followed by a `%` or `px`.  |
 | verticalAxis  | `verticalAxis: true,`| Adjust between vertical and horizontal chart layout | `true` or `false`  |
 | stacked       | `stacked: true,`| Enables your chart to become stacked. Default: `false` | `true` or `false`  |
-| incrementBy   | `incrementBy: 5,`| Adjust the value your axis increments | `number` |
+| incrementBy   | `incrementBy: 5,`| Adjust the value your axis increments | number |
 | titleFontSize | `titleFontSize: '15px',`| Adjust the value your axis increments | A `String` containing a `value` followed by a `%` or `px`. |
 | titleFontColour | `titleFontColour: 'green',`| Adjust the colour of your chart title | A `String` containing `colour name` or `hex code`. |
 | barColour | `barColour: [ 'blue', 'orange', 'red'],`| Adjust the colour(s) shown per bar. (Loops if less colours than bars) | An `array` containing/or a `String` containing the `colour name(s)` or `hex codes`. |
@@ -117,16 +116,20 @@ If you host jQuery using a Content Delivery Network change `node_modules/jquery/
 If you host jQuery locally you may need to modify the path `node_modules/jquery/dist/jquery.min.js`.
 
 ### Step 2
-Create a div with a unique id.
+Create a div with a unique `id` which will be the element in the drawBarChart function.
 
 ```html
 <div id="chart"></div>
 ```
 
 ### Step 3
-Add a script containing the following format below the div:
+As shown below start within a script element adding `drawBarChart( array, object, element)`.  
 
 #### Array Example
+In this example the array is `[ 1, 2, 3, 4, 5, 6, 7 ]`.  
+In this example the object is `{ verticalAxis: false, stacked: false, width: '100%', height: '100%' }`.  
+In this example the element selector is `'#chart'`.  
+
 ```javascript
 <script>
 drawBarChart(
@@ -142,6 +145,10 @@ drawBarChart(
 </script>
 ```
 #### Object Example
+In this example the array containing objects is is `[ {'Monday':10}, {'Tuesday':20}, {'Wednesday':3.5}, {'Thursday':7}, {'Friday':5}, {'Saturday':6}, {'Sunday':15} ]`.  
+In this example the object is `{ width: '100%', height: '100%', verticalAxis: false, stacked: false }`.  
+In this example the element selector is `'#chart'`.  
+
 ```Javascript
 drawBarChart(
   [ {'Monday':10}, {'Tuesday':20}, {'Wednesday':3.5}, {'Thursday':7}, {'Friday':5}, {'Saturday':6}, {'Sunday':15} ],
@@ -153,6 +160,7 @@ drawBarChart(
   }, 
   '#chart'
 )
+
 ```
 
 ## Screenshots
