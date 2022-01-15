@@ -1,3 +1,4 @@
+
 # Bar Chart
 
 Use a Bar Chart to show off your latest data. Customize each chart by choosing the options that work best for you.
@@ -65,22 +66,22 @@ Note: Add a comma unless it's the last option
 
 | Chart Options | Attributions / Code  | Usage | Input Supports |
 | :---          | :---- | :---  | :---     |
-| width         | `width: '100%',`| Adjust the Width of the chart   | A String containing a value followed by a % or px.  |
-| height        | `height: '100%',`| Adjust the height of the chart   | A String containing a value followed by a % or px.  |
-| verticalAxis  | `verticalAxis: true,`| Adjust between vertical and horizontal chart layout | true or false  |
-| stacked       | `stacked: true,`| Enables your chart to become stacked. Default: `false` | true or false  |
+| width         | `width: '100%',`| Adjust the Width of the chart   | A `String` containing a `value` followed by a `%` or `px`.  |
+| height        | `height: '100%',`| Adjust the height of the chart   | A `String` containing a `value` followed by a `%` or `px`.  |
+| verticalAxis  | `verticalAxis: true,`| Adjust between vertical and horizontal chart layout | `true` or `false`  |
+| stacked       | `stacked: true,`| Enables your chart to become stacked. Default: `false` | `true` or `false`  |
 | incrementBy   | `incrementBy: 5,`| Adjust the value your axis increments | number |
-| titleFontSize | `titleFontSize: '15px',`| Adjust the value your axis increments | A String containing a value followed by a % or px. |
-| titleFontColour | `titleFontColour: 'green',`| Adjust the colour of your chart title | A String containing colour name or hex code. |
-| barColour | `barColour: [ 'blue', 'orange', 'red'],`| Adjust the colour(s) shown per bar. (Loops if less colours than bars) | An array containing/or a String containing the colour names or hex codes. |
-| labelColour | `labelColour: [ 'blue', 'orange', 'red'],`| Adjust the colours shown per bar. (Loops if less colours than bars) | An array containing/or a String containing the colour names or hex codes. |
-| labelName | `labelName: 'Label',`| Adjust the default label name shown if a label isn't provided in the data. | A string of text |
-| labelFontSize | `labelFontSize: '10px',`| Adjust the default label font size | A String containing a value followed by a % or px. |
-| barSpacing | `barSpacing: '5px',`| Adjust the gap/spacing between the bars | A String containing a value followed by a % or px. |
-| barValueFontSize | `barValueFontSize: '15px',`| Adjust the bar value's font size | A String containing a value followed by a % or px. |
-| barValueFontWeight | `barValueFontWeight: 'normal',`| Adjust the bar chart value's font weight. | A string or number containing the font weight |
-| barValueColour | `barValueColour: '#FFFFFF',`| Adjust the bar value's colour | A String containing colour name or hex code |
-| barValuePosition | `barValuePosition: 'top',`| Adjust the value's position inside the bar | A string containing: `'top'`, `'centre'`, or `'bottom'` |
+| titleFontSize | `titleFontSize: '15px',`| Adjust the value your axis increments | A `String` containing a `value` followed by a `%` or `px`. |
+| titleFontColour | `titleFontColour: 'green',`| Adjust the colour of your chart title | A `String` containing `colour name` or `hex code`. |
+| barColour | `barColour: [ 'blue', 'orange', 'red'],`| Adjust the colour(s) shown per bar. (Loops if less colours than bars) | An `array` containing/or a `String` containing the `colour name(s)` or `hex codes`. |
+| labelColour | `labelColour: [ 'blue', 'orange', 'red'],`| Adjust the colours shown per bar. (Loops if less colours than bars) | An `array` containing/or a `String` containing the `colour name(s)` or `hex codes`. |
+| labelName | `labelName: 'Label',`| Adjust the default label name shown if a label isn't provided in the data. | A `string` of text |
+| labelFontSize | `labelFontSize: '10px',`| Adjust the default label font size | A `String` containing a `value` followed by a `%` or `px`. |
+| barSpacing | `barSpacing: '5px',`| Adjust the gap/spacing between the bars | A `String` containing a `value` followed by a `%` or `px`. |
+| barValueFontSize | `barValueFontSize: '15px',`| Adjust the bar value's font size | A `String` containing a `value` followed by a `%` or `px`. |
+| barValueFontWeight | `barValueFontWeight: 'normal',`| Adjust the bar chart value's font weight. | A `string` or `number` containing the `font weight` |
+| barValueColour | `barValueColour: '#FFFFFF',`| Adjust the bar value's colour | A `String` containing `colour name` or `hex code`. |
+| barValuePosition | `barValuePosition: 'top',`| Adjust the value's position inside the bar | A `string` containing: `top`, `centre`, or `bottom` |
   
 ## Installation
 
@@ -112,7 +113,8 @@ Include the following scripts & css in your *head* element.
 <script type="text/javascript" src="bar-chart.js"></script>
 <link rel="stylesheet" href="chartStyle.css">
 ```  
-Note: Depending on where you host jQuery library files, you may need to modify the path to *jquery.min.js* in your code.
+If you host jQuery using a Content Delivery Network change `node_modules/jquery/dist/jquery.min.js` to `https://code.jquery.com/jquery-3.6.0.min.js`  
+If you host jQuery locally you may need to modify the path `node_modules/jquery/dist/jquery.min.js`.
 
 ### Step 2
 Create a div with a unique id.
@@ -123,6 +125,8 @@ Create a div with a unique id.
 
 ### Step 3
 Add a script containing the following format below the div:
+
+#### Array Example
 ```javascript
 <script>
 drawBarChart(
@@ -137,6 +141,23 @@ drawBarChart(
 )
 </script>
 ```
+#### Object Example
+```Javascript
+drawBarChart(
+  [ {'Monday':10}, {'Tuesday':20}, {'Wednesday':3.5}, {'Thursday':7}, {'Friday':5}, {'Saturday':6}, {'Sunday':15} ],
+  {
+    width: '100%',
+    height: '100%',
+    verticalAxis: false,
+    stacked: false
+  }, 
+  '#chart'
+)
+```
+
+## Screenshots
+![Chart Layouts](https://i.imgur.com/FE7k3yy.jpeg)
+
 ## Author
 
 - [@MattSeligman](https://github.com/MattSeligman)
