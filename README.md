@@ -70,7 +70,7 @@ Note: Add a comma unless it's the last option
 | height        | `height: '100%',`| Adjust the height of the chart   | A `String` containing a `value` followed by a `%` or `px`.  |
 | verticalAxis  | `verticalAxis: true,`| Adjust between vertical and horizontal chart layout | `true` or `false`  |
 | stacked       | `stacked: true,`| Enables your chart to become stacked. Default: `false` | `true` or `false`  |
-| incrementBy   | `incrementBy: 5,`| Adjust the value your axis increments | number |
+| incrementBy   | `incrementBy: 5,`| Adjust the value your axis increments | `number` |
 | titleFontSize | `titleFontSize: '15px',`| Adjust the value your axis increments | A `String` containing a `value` followed by a `%` or `px`. |
 | titleFontColour | `titleFontColour: 'green',`| Adjust the colour of your chart title | A `String` containing `colour name` or `hex code`. |
 | barColour | `barColour: [ 'blue', 'orange', 'red'],`| Adjust the colour(s) shown per bar. (Loops if less colours than bars) | An `array` containing/or a `String` containing the `colour name(s)` or `hex codes`. |
