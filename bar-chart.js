@@ -177,7 +177,7 @@ function drawBarChart(data, options, element){
     barValueFontSize: '15px',
     barValueWeight: "normal",
     barValueColour: '#ffffff',
-    barValuePosition: 'top' // 'top', 'centre', or 'bottom'
+    barValuePosition: 'top'
   }
 
   // if options['verticalAxis'] is true
