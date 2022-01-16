@@ -1,7 +1,6 @@
 # Bar Chart
 
-Use a Bar Chart to display your latest data.  Include a range of numbers and categories so that you can compare them in a bar chart.  
-Customize each chart by choosing the options that work best for you.
+Use a Bar Chart to display your latest data.  Include a range of numbers and categories so that you can compare them in a bar chart. Customize each chart by choosing the options that work best for you.
 
 [Demonstration of Bar Chart](https://mattseligman.github.io/bar-chart/)
 ## Dependencies
