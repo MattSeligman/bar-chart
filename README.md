@@ -1,6 +1,12 @@
 # Bar Chart
 
-Use a Bar Chart to show off your latest data. Customize each chart by choosing the options that work best for you.
+Use a Bar Chart to display your latest data.  Include a range of numbers and categories so that you can compare them in a bar chart.  
+Customize each chart by choosing the options that work best for you.
+
+[Demonstration of Bar Chart](https://mattseligman.github.io/bar-chart/)
+## Dependencies
+
+jQuery, JavaScript, HTML, CSS
 
 
 ## Badges
@@ -10,6 +16,38 @@ Updates & Size            |  Issue(s) / Rating
 | ![GitHub issue/pull request detail](https://img.shields.io/github/issues/detail/last-update/MattSeligman/bar-chart/1) | [![GitHub issues](https://img.shields.io/github/issues/MattSeligman/bar-chart)](https://github.com/MattSeligman/bar-chart/issues)  |
 | ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/MattSeligman/bar-chart) | [![GitHub forks](https://img.shields.io/github/forks/MattSeligman/bar-chart)](https://github.com/MattSeligman/bar-chart/network) |
 |  | [![GitHub stars](https://img.shields.io/github/stars/MattSeligman/bar-chart)](https://github.com/MattSeligman/bar-chart/stargazers) |  
+
+## Two Bar Chart Scenarios & Screenshots
+Here are two scenarios to help understand how to use the bar chart(s) with screenshots of each scenarios outcome.
+
+### Scenario A
+In this bar chart example, we're interested in how many people attended an event on which day. 
+In this scenario they've counted a adult as `1`, and a youth as `0.5`.  
+
+#### Data Provided
+The data provided to us is includes a Day, and a value:  
+`Monday = 10, Tuesday = 20, Wednesday = 3.5, Thursday = 7, Friday = 5, Saturday = 6, Sunday = 15`  
+
+We adjust the data as so placing each Day, and value into its own Object seperating it with a comma:   
+`{Monday':10}, {'Tuesday':20}, {'Wednesday':3.5}, {'Thursday':7}, {'Friday':5}, {'Saturday':6}, {'Sunday':15}`  
+
+![Chart Layouts - Scenario A](https://i.imgur.com/IMSIzoK.png)  
+
+### Scenario B
+In this bar chart example, we're interested in how many people attended an event though we weren't provided any days.
+In this scenario they've counted a adult as `1`, and a youth as `0.5`.  
+
+#### Data Provided
+The data provided to us is includes a list of values:  
+`10, 20, 3.5, 7, 5, 6, 15`  
+
+As this data format is the same as an Array, we can use it in this simple format:   
+`10, 20, 3.5, 7, 5, 6, 15`  
+
+As days/labels were not provided, they will be generated from the labelName settings. If not set, they will use default names such as Label 1, Label 2 and so forth.
+
+![Chart Layouts - Scenario B](https://i.imgur.com/lsqv4tC.png)  
+
 
 ## Features
 
@@ -65,6 +103,7 @@ Note: Add a comma unless it's the last option
 
 | Chart Options | Attributions / Code  | Usage | Input Supports |
 | :---          | :---- | :---  | :---     |
+| chartName     | `chartName: 'Chart Name can be anything',`| Adjust the chart's name to anything you prefer.  | A `String` containing any preferred value.  |
 | width         | `width: '100%',`| Adjust the Width of the chart   | A `String` containing a `value` followed by a `%` or `px`.  |
 | height        | `height: '100%',`| Adjust the height of the chart   | A `String` containing a `value` followed by a `%` or `px`.  |
 | verticalAxis  | `verticalAxis: true,`| Adjust between vertical and horizontal chart layout | `true` or `false`  |
@@ -108,13 +147,10 @@ Include the following scripts & css in your *head* element.
 
 ### Step 1
 ```javascript
-<script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="bar-chart.js"></script>
 <link rel="stylesheet" href="chartStyle.css">
 ```  
-If you host jQuery using a Content Delivery Network change `node_modules/jquery/dist/jquery.min.js` to `https://code.jquery.com/jquery-3.6.0.min.js`  
-If you host jQuery locally you may need to modify the path `node_modules/jquery/dist/jquery.min.js`.
-
 ### Step 2
 Create a div with a unique `id` which will be the element in the drawBarChart function.
 
@@ -163,9 +199,11 @@ drawBarChart(
 
 ```
 
-## Screenshots
-![Chart Layouts](https://i.imgur.com/FE7k3yy.jpeg)
+## Roadmap
 
+- Support Comparison of Multiple Chart's on a single chart.
+- Support Multiple Array's and Objects for (Partial Support prepared)
+- Support Animated Bar growth from zero to bar value (CSS Animation)
 ## Author
 
 - [@MattSeligman](https://github.com/MattSeligman)
