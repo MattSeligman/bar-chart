@@ -523,7 +523,7 @@ function drawBarChart(data, options, element){
 
       if(chartOptions['stacked'] === true){
         // Optimize CSS by removing the height of the chartTitle and verticalIndex
-        $(`${element} > .container-1`).css("height", `calc( (${ $(`${element} > .container-1`).height() }px - ${ $(`${element} > .chartTitle`).height() }px - ${ $(`${element} > #horizontalIndex`).height() }px - 20px) )`);
+        $(`${element} > .container-1`).css("height", `calc( (${ $(`${element} > .container-1`).height() }px - ${ $(`${element} > .chartTitle`).height() }px - ${ $(`${element} > #horizontalIndex`).height() }px - 50px) )`);
 
       } else if(chartOptions['stacked'] === false){
         // Optimize CSS by removing the height of the chartTitle and verticalIndex
