@@ -104,7 +104,7 @@ Note: Add a comma unless it's the last option
 | :---          | :---- | :---  | :---     |
 | chartName     | `chartName: 'Chart Name can be anything',`| Adjust the chart's name to anything you prefer.  | A `String` containing any preferred value.  |
 | width         | `width: '100%',`| Adjust the Width of the chart   | A `String` containing a `value` followed by a `%` or `px`.  |
-| height        | `height: '100%',`| Adjust the height of the chart   | A `String` containing a `value` followed by a `%` or `px`.  |
+| height        | `height: '100vh',`| Adjust the height of the chart   | A `String` containing a `value` followed by a `vh`, `%` or `px`.  |
 | verticalAxis  | `verticalAxis: true,`| Adjust between vertical and horizontal chart layout | `true` or `false`  |
 | stacked       | `stacked: true,`| Enables your chart to become stacked. Default: `false` | `true` or `false`  |
 | incrementBy   | `incrementBy: 5,`| Adjust the value your axis increments | `number` |
