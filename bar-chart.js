@@ -507,6 +507,32 @@ function drawBarChart(data, options, element){
 
     }
 
+    // Revise CSS to support responsive design
+    if(chartOptions['verticalAxis'] === true){
+
+      if(chartOptions['stacked'] === true){
+        // Optimize CSS by removing the height of the chartTitle and verticalIndex
+        $(`${element} > .container-1`).css("height", `calc( (${ $(`${element} > .container-1`).height() }px - ${ $(`${element} > .chartTitle`).height() }px - ${ $(`${element} > #verticalIndex`).height() }px - 50px) )`);
+
+      } else if(chartOptions['stacked'] === false){
+        // Optimize CSS by removing the height of the chartTitle and verticalIndex
+        $(`${element} > .container-1`).css("height", `calc( (${ $(`${element} > .container-1`).height() }px - ${ $(`${element} > .chartTitle`).height() }px - ${ $(`${element} > #verticalIndex`).height() }px - 50px) )`);
+      }
+
+    } else if(chartOptions['verticalAxis'] === false){
+
+      if(chartOptions['stacked'] === true){
+        // Optimize CSS by removing the height of the chartTitle and verticalIndex
+        $(`${element} > .container-1`).css("height", `calc( (${ $(`${element} > .container-1`).height() }px - ${ $(`${element} > .chartTitle`).height() }px - ${ $(`${element} > #horizontalIndex`).height() }px - 20px) )`);
+
+      } else if(chartOptions['stacked'] === false){
+        // Optimize CSS by removing the height of the chartTitle and verticalIndex
+        $(`${element} > .container-1`).css("height", `calc( (${ $(`${element} > .container-1`).height() }px - ${ $(`${element} > .chartTitle`).height() }px - ${ $(`${element} > .container-1 > .container-2 > .bar > label`).height() }px - 50px) )`);
+      }
+
+    }
+
+
   if(options['stacked']){
 
     if (options.hasOwnProperty('labelColour')){

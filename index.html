@@ -9,17 +9,22 @@
 
   </head>
     <body>
-
-      <div style="display: flex; height: 100%; width: 100%; padding-bottom: 150px;">
+      <div class="chart_container">
         <div id="chart"></div>
         <div id="chart2"></div>
+      </div>
+
+      <div class="chart_container">
         <div id="chart3"></div>
         <div id="chart4"></div>
       </div>
 
-      <div style="display: flex; height: 100%; width: 100%; padding-bottom: 150px;">
+      <div class="chart_container">
         <div id="chart5"></div>
         <div id="chart6"></div>
+      </div>
+
+      <div class="chart_container">
         <div id="chart7"></div>
         <div id="chart8"></div>
       </div>
@@ -31,8 +36,8 @@
         chartName: 'Vertical Stacked Label & Value Chart #1',
         verticalAxis: true,
         stacked: true,
-        width: '50%',
-        height: '100%',
+        width: '100%',
+        height: '50vh',
         barColour: [ 'blue', 'orange', 'red', 'gray', '#964b00', 'purple', 'green' ],
         barValueColour: "white",
         barValueWeight: "bold",
@@ -50,8 +55,8 @@
         chartName: 'Horizontal Stacked Label & Value Chart #2',
         verticalAxis: false,
         stacked: true,
-        width: '50%',
-        height: '100%',
+        width: '100%',
+        height: '50vh',
         labelFontSize: '15px',
         labelColour: [ 'red', 'blue', 'green' ],
         barValueFontSize: "15px",
@@ -67,7 +72,7 @@
         verticalAxis: true,
         stacked: false,
         width: '50%',
-        height: '100%',
+        height: '100vh',
         barColour: [ 'blue', 'orange', 'red', 'gray', '#964b00', 'purple', 'green' ],
         barValueColour: "white",
         barValueWeight: "bold",
@@ -86,7 +91,7 @@
         verticalAxis: false,
         stacked: false,
         width: '50%',
-        height: '100%',
+        height: '100vh',
         barColour: [ 'blue', 'orange', 'red', 'gray', '#964b00', 'purple', 'green','cyan' ],
         barValueColour: "white",
         barValueWeight: "bold",
@@ -127,7 +132,7 @@
         height: '100%',
         incrementBy: '5',
         labelColour: [ 'red', 'blue', 'green' ],
-        labelFontSize: '13px',
+        labelFontSize: '15px',
         barValueFontSize: "15px",
         titleFontSize: '15px',
 
@@ -165,7 +170,7 @@
         barValueColour: "white",
         barValueWeight: "bold",
         barValueFontSize: "15px",
-        labelFontSize: '10px',
+        labelFontSize: '15px',
         labelColour: [ 'red', 'blue', 'green' ],
         titleFontSize: '15px',
         titleFontColour: 'orange'
